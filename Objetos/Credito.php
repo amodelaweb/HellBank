@@ -5,16 +5,27 @@
         private $tasaInteres;
         private $fechaPago;
         private $interesMora;
-        private $rol;
-        private $idDueño;
-        function __construct($id,$cuotaManejo,$tasaInteres,$fechaPago,$interesMora,$rol,$idDueño){
+        function __construct($id,$cuotaManejo,$tasaInteres,$fechaPago,$interesMora){
             $this->id = $id;
             $this->cuotaManejo = $cuotaManejo;
             $this->tasaInteres = $tasaInteres;
             $this->fechaPago = $fechaPago;
             $this->interesMora = $interesMora;
-            $this->rol = $rol;
-            $this->idDueño = $idDueño;
+        }
+        function getId(){
+            return $this->id;
+        }
+        function getCuotaManejo(){
+            return $this->cuotaManejo;
+        }
+        function getTasaInteres(){
+            return $this->tasaInteres;
+        }
+        function getFechaPago(){
+            return $this->fechaPago;
+        }
+        function getInteresMora(){
+            return $this->interesMora;
         }
     }
 ?>

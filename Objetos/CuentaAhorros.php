@@ -2,13 +2,25 @@
     class CuentaAhorros{
         private $id;
         private $cuotaManejo;
-        private $idDueño;
+        private $idDueno;
         private $saldo;
-        function __construct($id,$cuotaManejo,$idDueño,$saldo){
+        function __construct($id,$cuotaManejo,$idDueno,$saldo){
             $this->id = $id;
             $this->cuotaManejo = $cuotaManejo;
-            $this->idDueño = $idDueño;
+            $this->idDueno = $idDueno;
             $this->saldo = $saldo;
+        }
+        function getId(){
+            return $this->id;
+        }
+        function getCuotaManejo(){
+            return $this->cuotaManejo;
+        }
+        function getIdDueno(){
+            return $this->idDueno;
+        }
+        function getSaldo(){
+            return $this->saldo;
         }
     }
 ?>

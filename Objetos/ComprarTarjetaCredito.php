@@ -1,15 +1,15 @@
 <?php
-    class Consignacion{
+    class ComprarTarjetaCredito{
         private $id;
         private $monto;
         private $fecha;
-        private $idDestino;
+        private $numCuotas;
         private $moneda;
-        function __construct($id,$monto,$fecha,$idDestino,$moneda){
+        function __construct($id,$monto,$fecha,$numCuotas,$moneda){
             $this->id = $id;
             $this->monto = $monto;
             $this->fecha = $fecha;
-            $this->idDestino = $idDestino;
+            $this->numCuotas = $numCuotas;
             $this->moneda = $moneda;
         }
         function getId(){
@@ -21,8 +21,8 @@
         function getFecha(){
             return $this->fecha;
         }
-        function getIdDestino(){
-            return $this->idDestino;
+        function getNumCuotas(){
+            return $this->numCuotas;
         }
         function getMoneda(){
             return $this->moneda;

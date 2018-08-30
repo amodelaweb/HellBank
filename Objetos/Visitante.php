@@ -6,5 +6,11 @@
             $this->email = $email;
             $this->cedula = $cedula;
         }
+        function getEmail(){
+            return $this->email;
+        }
+        function getCedula(){
+            return $this->cedula;
+        }
     }
 ?>
