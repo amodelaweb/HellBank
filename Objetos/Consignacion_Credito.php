@@ -1,16 +1,14 @@
 <?php
-    class ComprarTarjetaCredito{
+    class ConsignacionCredito{
         private $id;
-        private $id_producto  ;
+        private $idDestino;
         private $monto;
         private $fecha;
-        private $numCuotas;
         private $moneda;
         private $connection ;
 
         function __construct($conn){
             $this->$connection = $conn ;
-
         }
         function getId(){
             return $this->id;
@@ -21,8 +19,8 @@
         function getFecha(){
             return $this->fecha;
         }
-        function getNumCuotas(){
-            return $this->numCuotas;
+        function getIdDestino(){
+            return $this->idDestino;
         }
         function getMoneda(){
             return $this->moneda;

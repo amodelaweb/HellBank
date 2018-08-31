@@ -1,14 +1,19 @@
 <?php
-    include_once dirname(__FILE__) . '/CentroMensajes.php';
     class Usuario{
+
         private $id;
+        private $user_name ;
+        private $nombre;
+        private $apellido;
         private $email;
         private $rol;
-        function __construct($id, $email,$rol){
-            $this->id = $id;
-            $this->email = $email;
-            $this->rol = $rol;
+
+        private $connection ;
+
+        function __construct($conn){
+            $this->$connection = $conn;
         }
+        /* GETTERS Y SETTERS*/
         function getId(){
             return $this->id;
         }

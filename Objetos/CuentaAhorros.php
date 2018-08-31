@@ -2,13 +2,13 @@
     class CuentaAhorros{
         private $id;
         private $cuotaManejo;
+        private $tasa_interes ;
+        private $fecha_creado ;     
         private $idDueno;
         private $saldo;
-        function __construct($id,$cuotaManejo,$idDueno,$saldo){
-            $this->id = $id;
-            $this->cuotaManejo = $cuotaManejo;
-            $this->idDueno = $idDueno;
-            $this->saldo = $saldo;
+        private $connection ;
+        function __construct($conn){
+            $this->$connection = $conn ;
         }
         function getId(){
             return $this->id;
