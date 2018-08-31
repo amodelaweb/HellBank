@@ -3,6 +3,7 @@
         private $correDestino;
         private $asunto;
         private $mensaje;
+        private $connection ;
         function __construct($correoDestino, $asunto, $mensaje){
             $this->correoDestino = $correoDestino;
             $this->asunto = $asunto;
@@ -20,15 +21,15 @@
                 $mail->Password = 'Andres1998';                           // SMTP password
                 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587;                                    // TCP port to connect to
-            
+
                 //Recipients
                 $mail->setFrom('soyunavenger128@gmail.com', 'PHPMailer');
-                $mail->addAddress($this->correoDestino,$username);    
-            
+                $mail->addAddress($this->correoDestino,$username);
+
                 //Content
                 $mail->Subject = $this->asunto;
                 $mail->Body = $this->mensaje;
-            
+
                 $mail->send();
                 echo 'El mensaje fué enviado';
             } catch (Exception $e) {

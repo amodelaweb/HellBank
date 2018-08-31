@@ -1,16 +1,14 @@
 <?php
-    class Consignacion{
+    class ConsignacionDebito{
         private $id;
         private $monto;
         private $fecha;
         private $idDestino;
         private $moneda;
-        function __construct($id,$monto,$fecha,$idDestino,$moneda){
-            $this->id = $id;
-            $this->monto = $monto;
-            $this->fecha = $fecha;
-            $this->idDestino = $idDestino;
-            $this->moneda = $moneda;
+        private $connection ;
+
+        function __construct($conn){
+            $this->$connection = $conn ;
         }
         function getId(){
             return $this->id;

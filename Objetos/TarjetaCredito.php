@@ -3,21 +3,21 @@
 
         var $estados = ["APROBADA","NO_APROBADA","EN_ESPERA"];
         private $id;
-        private $cuotaManejo;
         private $idDueno;
         private $cupoMaximo;
         private $sobreCupo;
+        private $gastado ;
+        private $cuotaManejo;
         private $tasaInteres;
         private $estado;
-        function __construct($id,$cuotaManejo,$idDueno,$cupoMaximo,$sobreCupo,$tasaInteres){
-            $this->id = $id;
-            $this->cuotaManejo = $cuotaManejo;
-            $this->idDueno = $idDueno;
-            $this->cupoMaximo = $cupoMaximo;
-            $this->sobreCupo = $sobreCupo;
-            $this->tasaInteres = $tasaInteres;
-            $this->estado = $this->estados[2];
+        private $fecha_creado ;
+        private $fecha_ultimo_pago ; 
+        private $connection ;
+
+        function __construct($conn){
+            $this->$connection = $conn ;
         }
+        /* GETTERS AND SETTERS */
         function getId(){
             return $this->id;
         }

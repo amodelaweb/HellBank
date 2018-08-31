@@ -1,16 +1,19 @@
 <?php
     class Credito{
         private $id;
+        private $monto ;
         private $cuotaManejo;
         private $tasaInteres;
         private $fechaPago;
+        private $fechaCreado;
         private $interesMora;
-        function __construct($id,$cuotaManejo,$tasaInteres,$fechaPago,$interesMora){
-            $this->id = $id;
-            $this->cuotaManejo = $cuotaManejo;
-            $this->tasaInteres = $tasaInteres;
-            $this->fechaPago = $fechaPago;
-            $this->interesMora = $interesMora;
+        private $connection ;
+        private $dueno  ;
+        private $email_vis ;
+        private $ultimo_pago ;
+        
+        function __construct($conn){
+            $this->$connection = $conn ;
         }
         function getId(){
             return $this->id;

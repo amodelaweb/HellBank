@@ -1,11 +1,16 @@
 <?php
     class Visitante{
+
         private $email;
+        private $nombre ;
+        private $apellido; 
         private $cedula;
-        function __construct($email, $cedula){
-            $this->email = $email;
-            $this->cedula = $cedula;
+        private $connection;
+
+        function __construct($conn){
+            $this->connection = $conn;
         }
+        /* GETTERS AND SETTERS */
         function getEmail(){
             return $this->email;
         }

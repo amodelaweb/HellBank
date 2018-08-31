@@ -1,0 +1,2 @@
+mariadb -h localhost -u morenito22 -p hellbank < ~/MEGA/Universidad/Octavo\ Semestre/Programacion\ en\ la\ Web/Modulo\ 2\ -\ PHP/Proyecto/HellBank/data_base.sql
+
