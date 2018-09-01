@@ -1,35 +1,40 @@
 $(document).ready(function(){
-    $('#create').click(function(e){
-        e.preventDefault();
+  $('#botonform').click(function(e){
+    e.preventDefault();
 
-        var url = $('form').serialize();
+    var url = $('form').serialize();
 
-        function getUrlVars(url) {
-            var hash;
-            var myJson = {};
-            var hashes = url.slice(url.indexOf('?') + 1).split('&');
-            for (var i = 0; i < hashes.length; i++) {
-                hash = hashes[i].split('=');
-                myJson[hash[0]] = hash[1];
-            }
-            return JSON.stringify(myJson);
-        }
+    function getUrlVars(url) {
+      var hash;
+      var myJson = {};
+      var hashes = url.slice(url.indexOf('?') + 1).split('&');
+      for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        myJson[hash[0]] = hash[1];
+      }
+      return JSON.stringify(myJson);
+    }
 
-        var test = getUrlVars(url);
+    var test = getUrlVars(url);
 
-        $.ajax({
-            type:"POST",
-            url: "api/Usuarios/create.php",
-            data: test,
-            ContentType:"application/json",
+    localStorage.setItem('gameStorage', test);
+    console.log("ok");
+    $.ajax({
+      type:"POST",
+      dataType: 'JSON',
+      url: "/HellBank/api/Usuarios/create.php",
+      data: test,
+      ContentType:"application/json",
 
-            success:function(){
-                alert('Creado Exitosamente');
-            },
-            error:function(){
-                alert('Error Creando Usuario');
-            }
+      success:function(response){
+        alert('Creado Exitosamente');
+        console.log(response);
+      },
+      error:function(response){
+        alert('Error Creando Usuario');
+        console.log(response);
+      }
 
-        });
     });
+  });
 });

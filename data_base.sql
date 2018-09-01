@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS usuarios (
   id INT AUTO_INCREMENT,
-  user VARCHAR (50) NOT NULL UNIQUE,
+  user_name VARCHAR (50) NOT NULL UNIQUE,
   password VARCHAR (512) NOT NULL,
   nombre VARCHAR (50),
   apellido VARCHAR (50),

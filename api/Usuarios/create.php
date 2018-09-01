@@ -21,14 +21,23 @@
   $usuario->setPassword($datos->password);
   $usuario->setEmail($datos->email);
 
-  if($usuario->Registrar_Usuario() == 1) {
+  $res = $usuario->Registrar_Usuario() ;
+
+  if($res == "exito") {
     http_response_code(201);
     echo json_encode(
-      array('Resultado' => 'Creado con exito')
+      array('Resultado' =>  $res)
     );
-  } else {
+  }else if ($res == "error"){
     http_response_code(400);
     echo json_encode(
-      array('Resultado' => 'Error al crear usuario')
+      array('Resultado' => "foreign error")
+    );
+  }else{
+    http_response_code(400);
+    echo json_encode(
+      array('Resultado' => $res)
     );
   }
+
+?>
