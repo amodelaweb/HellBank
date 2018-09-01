@@ -19,26 +19,26 @@
 
 <body>
     <h1>Consignación</h1>
-    <form>
+    <form method="POST" action="/consignarVisitante.php">
         <div class="form-group">
             <label for="formGroupExampleInput">Número producto destino</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese id">
+            <select name="tipoProducto">
+                <option value="ahorros">Cuenta Ahorros</option>
+                <option value="credito">Crédito</option>
+            </select>
+            <input type="text" name="idProductoDestino" class="form-control" id="formGroupExampleInput" placeholder="Ingrese id">
             <br>
             <label for="formGroupExampleInput">Número cédula</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese cédula">
+            <input name="cedula" type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese cédula">
             <br>
             <label for="formGroupExampleInput">Monto</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese monto">
+            <input type="text" name="monto" class="form-control" id="formGroupExampleInput" placeholder="Ingrese monto">
             <br>
             <label for="formGroupExampleInput">Tipo de moneda: </label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                <label class="form-check-label" for="inlineRadio1">JaveCoins</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                <label class="form-check-label" for="inlineRadio1">Pesos</label>
-            </div>
+            <select name="tipoMoneda">
+                    <option value="javecoins">Javecoins</option>
+                    <option value="pesos">Pesos</option>
+                </select>
             <br>
             <input type="submit" value="Consignar" class="btn btn-primary">
         </div>
