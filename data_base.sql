@@ -1,12 +1,13 @@
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT,
   user VARCHAR (50) NOT NULL UNIQUE,
   password VARCHAR (512) NOT NULL,
   nombre VARCHAR (50),
   apellido VARCHAR (50),
   emailadd VARCHAR (255) NOT NULL UNIQUE,
-  rol ENUM ('admin','user') NOT NULL
+  rol ENUM ('admin','user') NOT NULL,
+  PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*--------------------------------------------------------------------------------------------*/
@@ -98,6 +99,7 @@ CREATE TABLE IF NOT EXISTS retiro (
 CREATE TABLE IF NOT EXISTS consignacion_credito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   id_destino INT NOT  NULL,
+  id_origen INT,
   monto INT UNSIGNED NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id_destino)
@@ -109,6 +111,7 @@ CREATE TABLE IF NOT EXISTS consignacion_credito (
 CREATE TABLE IF NOT EXISTS consignacion_debito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   id_destino INT NOT  NULL,
+  id_origen INT,
   monto INT UNSIGNED NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id_destino)
