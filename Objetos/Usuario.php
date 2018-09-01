@@ -1,4 +1,4 @@
-<?php 
+<?php
     class Usuario
     {
         private $id;
@@ -46,6 +46,11 @@
             }
             return false;
             printf("Error: %s.\n", $sql->error);
+        }
+
+        public function Auth_Oth($user, $password)
+        {
+          
         }
         /* GETTERS Y SETTERS*/
 
