@@ -50,7 +50,28 @@
 
         public function Auth_Oth($user, $password)
         {
-          
+          try {
+            $this->password = htmlspecialchars(strip_tags($this->password));
+            $password   = crypt($this->password);
+            $this->password =  null ;
+            $query = 'INSERT INTO ' . 'usuarios' . ' SET user_name = :user_name, password = :password, nombre = :nombre, apellido = :apellido, emailadd = :emailadd, rol = :rol';
+            $sql = $this->connection->prepare($query);
+
+            $this->$user_name = htmlspecialchars(strip_tags($this->$user_name));
+            $this->nombre = htmlspecialchars(strip_tags($this->nombre));
+            $this->apellido = htmlspecialchars(strip_tags($this->apellido));
+            $this->email = htmlspecialchars(strip_tags($this->email));
+            $this->rol = htmlspecialchars(strip_tags($this->rol));
+
+            $sql->bindParam(':user_name', $this->user_name);
+            $sql->bindParam(':password', $password);
+            
+            if ($sql->execute()) {
+                return true;
+            }
+          } catch (PDOException $e) {
+              echo "Error de coneccion : " .  $e->getMessage();
+          }
         }
         /* GETTERS Y SETTERS*/
 
