@@ -30,9 +30,11 @@
                         $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
                         $sql4 = 'UPDATE cuenta_ahorros SET monto ='.$montoDestino.' WHERE id = '.$idProductoDestino;
                         $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
+                        $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idProductoOrigen.','.$idProductoDestino.',"Se ha hecho una consignación por '.$monto.'")';
                         $con->query($sql3);
                         $con->query($sql4);
                         $con->query($sql5);
+                        $con->query($sql6);
                         echo "Consignación Realizada";
                     }else{
                         echo "No hay fondos suficientes";
@@ -56,22 +58,17 @@
                     if($res2 != 0){
                         $montoDestino = $res2-$monto;
                         if($res1 >= $monto){
-                            if($montoDestino == 0){
-                                $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
-                                $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
-                                $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
-                                $con->query($sql3);
-                                $con->query($sql4);
-                                $con->query($sql5);
-                            }else{
+                            if($montoDestino != 0){
                                 $montoOrigen += $montoDestino;
-                                $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
-                                $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
-                                $sql5 = 'INSERT INTO consignacion_credito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
-                                $con->query($sql3);
-                                $con->query($sql4);
-                                $con->query($sql5);                        
                             }
+                            $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
+                            $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
+                            $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
+                            $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idProductoOrigen.','.$idProductoDestino.',"Se ha hecho una consignación por '.$monto.'")';
+                            $con->query($sql3);
+                            $con->query($sql4);
+                            $con->query($sql5);
+                            $con->query($sql6);
                             echo "Consignación Realizada";
                         }else{
                             echo "No hay fondos suficientes";

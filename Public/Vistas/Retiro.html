@@ -19,10 +19,13 @@
 
 <body>
     <h1>Retiro</h1>
-    <form>
+    <form method="POST" action="\retiro.php">
         <div class="form-group">
+            <label for="formGroupExampleInput">Id Producto Origen</label>
+            <input type="text" name="idOrigen" class="form-control" id="formGroupExampleInput" placeholder="id Producto">
+            <br>
             <label for="formGroupExampleInput">Cantidad a Retirar</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese cantidad">
+            <input type="text" name="cantRetirar" class="form-control" id="formGroupExampleInput" placeholder="Ingrese cantidad">
             <br>
             <input type="submit" value="Retirar" class="btn btn-primary">
         </div>
