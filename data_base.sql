@@ -174,5 +174,6 @@ INSERT INTO operaciones_admin (nombre_operacion) VALUES ('aprobar_credito'),
                                                             ('aprobar_ahorros'),
                                                             ('aprobar_tarjeta_credito'),
                                                             ('aprueba_cupo') ,
-                                                            ('aprueba_sobrecupo');
+                                                            ('aprueba_sobrecupo'),
+                                                            ('fin_mes');
 /*--------------------------------------------------------------------------------------------*/

@@ -10,12 +10,12 @@
         $sql1 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProdOrigen;
         if(!empty($con->query($sql1))){
             foreach ($con->query($sql1) as $res1) {
-                $res = $res1['monto'];
+                $res = $res1['saldo'];
                 $idCA = $res1['id'];
             }
             $montoOrigen = $res-$cantRetirar;
             if($res >= $cantRetirar){
-                $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProdOrigen;
+                $sql3 = 'UPDATE cuenta_ahorros SET saldo ='.$montoOrigen.' WHERE id = '.$idProdOrigen;
                 $sql4 = 'INSERT INTO retiro (id_ahorros,monto,fecha_realizado) VALUES('.$idCA.','.$cantRetirar.',NOW())';
                 $sql5 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idCA.',1,"Se ha hecho un retiro por '.$cantRetirar.'")';
                 $con->query($sql3);
