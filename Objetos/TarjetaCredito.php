@@ -21,7 +21,35 @@
         }
         public function create_tarjeta()
         {
-            // code...
+            try {
+
+                $query = 'INSERT INTO ' . 'tarjeta_credito' . ' SET id_dueno = :id_dueno, id_ahorros = :id_ahorros, cupo_maximo = :cupo_maximo, gastado = :gastado, sobre_cupo = :sobre_cupo, tasa_interes = :tasa_interes, mora = :mora, cuota_manejo = :cuota_manejo';
+                $sql = $this->connection->prepare($query);
+                $this->id_ahorros = htmlspecialchars(strip_tags($this->id_ahorros));
+                $this->idDueno = htmlspecialchars(strip_tags($this->idDueno));
+                $this->cupoMaximo = 0 ;
+                $this->gastado =  0 ;
+                $this->sobreCupo = 0 ;
+                $this->tasaInteres = 0 ;
+                $this->mora = 0 ;
+                $this->fecha_creado = time() ;
+                $this->cuotaManejo = 0 ;
+                $sql->bindParam(':id_dueno', $this->idDueno);
+                $sql->bindParam(':id_ahorros', $this->id_ahorros);
+                $sql->bindParam(':cupo_maximo', $this->cupoMaximo);
+                $sql->bindParam(':gastado', $this->gastado);
+                $sql->bindParam(':sobre_cupo', $this->sobreCupo);
+                $sql->bindParam(':tasa_interes', $this->tasaInteres);
+                $sql->bindParam(':mora', $this->mora);
+                $sql->bindParam(':cuota_manejo', $this->cuotaManejo);
+                if ($sql->execute()) {
+                    return "exito";
+                }
+            } catch (PDOException $e) {
+                echo "ok" . $e;
+                return "error " .  $e->getMessage();
+            }
+            return "error";
         }
         /* GETTERS AND SETTERS */
 

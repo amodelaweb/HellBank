@@ -168,16 +168,15 @@ CREATE TABLE IF NOT EXISTS sistema (
   cuota_manejo_default FLOAT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 /*--------------------------------------------------------------------------------------------*/
-CREATE TABLE IF NOT EXISTS transferencias (
+CREATE TABLE IF NOT EXISTS transferencias_externas (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   banco_origen VARCHAR(50) NOT NULL,
-  id_origen INT NOT NULL,
   banco_destino VARCHAR(50) NOT NULL,
-  id_destino INT NOT NULL,
+  id_origen INT,
+  monto FLOAT NOT NULL,
+  id_destino INT,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id_origen)
-    REFERENCES cuenta_ahorros (id)
-    ON UPDATE CASCADE ON DELETE RESTRICT,
+  tipo_trans VARCHAR(200) NOT NULL,
   PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 /*--------------------------------------------------------------------------------------------*/
@@ -185,7 +184,7 @@ INSERT INTO operaciones_admin (nombre_operacion) VALUES ('aprobar_credito'),
                                                             ('aprobar_ahorros'),
                                                             ('aprobar_tarjeta_credito'),
                                                             ('aprueba_cupo') ,
-                                                            ('aprueba_sobrecupo'),
-                                                            ('fin_mes');
+                                                            ('fin_mes') ,
+                                                            ('aprueba_sobrecupo');
 /*--------------------------------------------------------------------------------------------*/
 
