@@ -51,7 +51,7 @@ class Token
             return $decoded->rol ;
           }
         } catch (\Exception $e) {
-            
+            return false;
         }
         return false ;
     }

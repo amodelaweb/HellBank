@@ -17,29 +17,79 @@
 
         public function create_ahorros()
         {
-            try{
-              $query = 'INSERT INTO ' . 'cuenta_ahorros' . ' SET tasa_interes = :tasa_interes, saldo = :saldo, id_dueno = :id_dueno, cuota_manejo = :cuota_manejo';
-              $sql = $this->connection->prepare($query);
+            try {
+                $query = 'INSERT INTO ' . 'cuenta_ahorros' . ' SET tasa_interes = :tasa_interes, saldo = :saldo, id_dueno = :id_dueno, cuota_manejo = :cuota_manejo';
+                $sql = $this->connection->prepare($query);
 
-              $this->saldo = htmlspecialchars(strip_tags($this->saldo));
-              $this->fecha_creado = time() ;
-              $this->cuotaManejo = 0 ;
+                $this->saldo = htmlspecialchars(strip_tags($this->saldo));
+                $this->fecha_creado = time() ;
+                $this->cuotaManejo = 0 ;
 
-              $sql->bindParam(':tasa_interes', $this->tasa_interes);
-              $sql->bindParam(':saldo', $this->saldo);
-              $sql->bindParam(':id_dueno', $this->idDueno);
-              $sql->bindParam(':cuota_manejo', $this->cuotaManejo);
+                $sql->bindParam(':tasa_interes', $this->tasa_interes);
+                $sql->bindParam(':saldo', $this->saldo);
+                $sql->bindParam(':id_dueno', $this->idDueno);
+                $sql->bindParam(':cuota_manejo', $this->cuotaManejo);
 
-              if ($sql->execute()) {
-                  return "exito";
-              }
-
-            }catch (PDOException $e) {
+                if ($sql->execute()) {
+                    return "exito";
+                }
+            } catch (PDOException $e) {
                 return "error " .  $e->getMessage();
             }
             return "error";
         }
 
+        public static function exist_cuenta($id, $conn)
+        {
+            try {
+                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_cuenta LIMIT 0,1';
+                $sql = $conn->prepare($query);
+                $sql->bindParam(':id_cuenta', $id);
+                $sql->execute();
+                $res = $sql->fetch(PDO::FETCH_ASSOC);
+
+                if (!empty($res)) {
+                    return true;
+                } else {
+                    return false ;
+                }
+            } catch (PDOException $e) {
+                return false;
+            }
+            return false;
+        }
+
+        public static function getUser_Cuentas($id_user, $conn)
+        {
+            try {
+                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_dueno';
+                $sql = $conn->prepare($query);
+                $sql->bindParam(':id_dueno', $id_user);
+                $sql->execute();
+                $n = $sql->rowCount();
+                if ($n > 0) {
+                    $respuesta = array();
+                    $respuesta['cuentas_ahorro'] = array();
+                    while ($fila = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        extract($fila);
+                        $cat_item = array(
+                          'id' => $id,
+                          'tasa_interes' => $tasa_interes,
+                          'saldo' => $saldo,
+                          'cuota_manejo' => $cuota_manejo,
+                          'fecha_creado' => $fecha_creado);
+                        array_push($respuesta['cuentas_ahorro'], $cat_item);
+                    }
+
+                    return array ( 'band' => true , 'res' =>  $respuesta) ;
+                }else{
+                  return array ( 'band' => false , 'res' => 'nul') ;
+                }
+            } catch (PDOException $e) {
+                return array ( 'band' => false , 'res' => 'nul') ;
+            }
+            return array ( 'band' => false , 'res' => 'nul') ;
+        }
         /**
          * Get the value of Id
          *
@@ -208,5 +258,3 @@
             return $this;
         }
     }
-
-?>
