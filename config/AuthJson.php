@@ -51,7 +51,7 @@ class Token
             return $decoded->rol ;
           }
         } catch (\Exception $e) {
-            echo 'error' . $e;
+            
         }
         return false ;
     }
@@ -93,4 +93,16 @@ class Token
     {
         return $this->jwt_own;
     }
+
+
+    /**
+     * Get the value of Id
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
 }
