@@ -6,6 +6,7 @@
         private $monto ;
         private $fechaCreado;
         private $dueno  ;
+        private $estado;
         private $email_vis ;
         private $ultimo_pago ;
         private $connection ;

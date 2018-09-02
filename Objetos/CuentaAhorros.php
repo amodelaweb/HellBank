@@ -7,6 +7,7 @@
         private $fecha_creado ;
         private $idDueno;
         private $saldo;
+        private $estado;
         private $connection ;
 
         public function __construct($conn)

@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS visitante  (
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS credito  (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  estado ENUM ('APROBADO','NO_APROBADO' , 'EN_ESPERA') DEFAULT 'EN_ESPERA',
   tasa_interes FLOAT NOT NULL,
   interes_mora FLOAT NOT NULL,
   monto FLOAT NOT NULL,
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS credito  (
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS cuenta_ahorros  (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  estado ENUM ('APROBADO','NO_APROBADO' , 'EN_ESPERA') DEFAULT 'EN_ESPERA',
   tasa_interes FLOAT NOT NULL,
   saldo FLOAT NOT NULL,
   cuota_manejo FLOAT,
@@ -50,6 +52,7 @@ CREATE TABLE IF NOT EXISTS cuenta_ahorros  (
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS tarjeta_credito  (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  estado ENUM ('APROBADO','NO_APROBADO' , 'EN_ESPERA') DEFAULT 'EN_ESPERA',
   id_dueno INT NOT NULL,
   id_ahorros INT NOT NULL,
   cupo_maximo FLOAT NOT NULL,
