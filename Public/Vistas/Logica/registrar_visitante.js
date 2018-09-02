@@ -22,7 +22,7 @@ $(document).ready(function(){
     $.ajax({
       type:"POST",
       dataType: 'JSON',
-      url: "/HellBank/api/Usuarios/create.php",
+      url: "/HellBank/api/Visitante/create.php",
       data: test,
       ContentType:"application/json",
 
@@ -31,7 +31,7 @@ $(document).ready(function(){
         console.log(response);
       },
       error:function(response){
-        alert('Error Creando Usuario ' + response.responseJSON.error);
+        alert('Error Creando Visitante ' + response.responseJSON.error);
         console.log(response);
       }
 

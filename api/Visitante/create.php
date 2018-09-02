@@ -14,7 +14,7 @@
   $visitante_n = new Visitante($conn) ;
 
   $datos = json_decode(file_get_contents("php://input"));
-
+  $datos->email = str_replace("%40","@",$datos->email);
   $visitante_n->setNombre($datos->nombre);
   $visitante_n->setApellido($datos->apellido);
   $visitante_n->setCedula($datos->cedula);
@@ -36,6 +36,11 @@
       array('error' => "foreign error")
     );
   }else{
+    $res = str_replace("SQLSTATE[23000]: Integrity constraint violation","",$res);
+    $res = str_replace("for key","",$res);
+    $res = str_replace("for key","",$res);
+    $res = str_replace("1062","",$res);
+
     http_response_code(400);
     echo json_encode(
       array('error' => htmlspecialchars(strip_tags($res)))

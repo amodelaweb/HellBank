@@ -14,7 +14,7 @@ $conn = $database->connection();
 $visitante_n = new Visitante($conn) ;
 
 $datos = json_decode(file_get_contents("php://input"));
-
+$datos->email = str_replace("%40","@",$datos->email);
 $visitante_n->setEmail($datos->email) ;
 $res = $visitante_n->exist_visitante() ;
 

@@ -16,3 +16,7 @@
     padding-left: 20%;
     padding-top: 10%;
 }
+
+input:invalid, textarea:invalid {
+  background:red;
+}
