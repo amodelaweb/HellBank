@@ -1,3 +1,3 @@
 <?php
-define('my_key','encriptacion');
+define('MY_KEY','encriptacion');
 ?>

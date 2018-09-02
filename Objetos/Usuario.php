@@ -26,7 +26,7 @@
                 $query = 'INSERT INTO ' . 'usuarios' . ' SET user_name = :user_name, password = :password, nombre = :nombre, apellido = :apellido, emailadd = :emailadd, rol = :rol';
                 $sql = $this->connection->prepare($query);
 
-                $this->$user_name = htmlspecialchars(strip_tags($this->$user_name));
+                $this->user_name = htmlspecialchars(strip_tags($this->user_name));
                 $this->nombre = htmlspecialchars(strip_tags($this->nombre));
                 $this->apellido = htmlspecialchars(strip_tags($this->apellido));
                 $this->email = htmlspecialchars(strip_tags($this->email));
@@ -39,39 +39,39 @@
                 $sql->bindParam(':emailadd', $this->email);
                 $sql->bindParam(':rol', $this->rol);
                 if ($sql->execute()) {
-                    return true;
+                    return "exito";
                 }
             } catch (PDOException $e) {
-                echo "Error de coneccion : " .  $e->getMessage();
+                return "error " .  $e->getMessage();
             }
-            return false;
-            printf("Error: %s.\n", $sql->error);
+            return "error";
         }
 
-        public function Auth_Oth($user, $password)
+        public function Auth_Oth($user_input)
         {
-          try {
-            $this->password = htmlspecialchars(strip_tags($this->password));
-            $password   = crypt($this->password);
-            $this->password =  null ;
-            $query = 'INSERT INTO ' . 'usuarios' . ' SET user_name = :user_name, password = :password, nombre = :nombre, apellido = :apellido, emailadd = :emailadd, rol = :rol';
-            $sql = $this->connection->prepare($query);
+            try {
+                $query = 'SELECT id, rol, password FROM ' . 'usuarios' . ' WHERE user_name = :user_name LIMIT 0,1';
+                $sql = $this->connection->prepare($query);
+                $this->user_name = htmlspecialchars(strip_tags($this->user_name));
+                $sql->bindParam(':user_name', $this->user_name);
+                $sql->execute();
+                $res = $sql->fetch(PDO::FETCH_ASSOC);
 
-            $this->$user_name = htmlspecialchars(strip_tags($this->$user_name));
-            $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-            $this->apellido = htmlspecialchars(strip_tags($this->apellido));
-            $this->email = htmlspecialchars(strip_tags($this->email));
-            $this->rol = htmlspecialchars(strip_tags($this->rol));
+                if (!empty($res)) {
+                    $this->id = $res['id'];
+                    $this->rol = $res['rol'];
+                    $this->password = $res['password'] ;
 
-            $sql->bindParam(':user_name', $this->user_name);
-            $sql->bindParam(':password', $password);
-            
-            if ($sql->execute()) {
-                return true;
+                    if (hash_equals($this->password, crypt($user_input, $this->password))) {
+                        return "success";
+                    }
+                } else {
+                    return "error" ;
+                }
+            } catch (PDOException $e) {
+                return "error" .  $e->getMessage();
             }
-          } catch (PDOException $e) {
-              echo "Error de coneccion : " .  $e->getMessage();
-          }
+            return "error";
         }
         /* GETTERS Y SETTERS*/
 
@@ -268,4 +268,3 @@
         }
         /* ------------------ */
     }
- ?>
