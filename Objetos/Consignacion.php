@@ -43,12 +43,12 @@
                             $con->query($sql4);
                             $con->query($sql5);
                             $con->query($sql6);
-                            return array( 'band' => true , "msn" =>  "Consignación Realizada");
+                            return array( 'band' => true , "msn" =>  "Consignación Realizada") ;
                         } else {
-                            return array( 'band' => false , "msn" =>  "No hay fondos suficientes");
+                            return array( 'band' => false , "msn" =>  "No hay fondos suficientes") ;
                         }
                     } else {
-                        return array( 'band' => false , "msn" =>  "No existe cuenta de ahorros de destino");
+                        return array( 'band' => false , "msn" =>  "No existe cuenta de ahorros de destino") ;
                     }
                 } elseif ($tipoProducto == "credito") {
                     $sql2 = 'SELECT * FROM credito WHERE id = '.$idProductoDestino;
@@ -79,82 +79,81 @@
                                 $con->query($sql4);
                                 $con->query($sql5);
                                 $con->query($sql6);
-                                return array( 'band' => true , "msn" =>  "Consignación Realizada");
+                                return array( 'band' => true , "msn" =>  "Consignación Realizada") ;
                             } else {
-                                return array( 'band' => false , "msn" =>  "No hay fondos suficientes");
+                                return array( 'band' => false , "msn" =>  "No hay fondos suficientes") ;
                             }
                         } else {
-                            return array( 'band' => false , "msn" =>  "No se puede hacer la consignación porque el crédito se encuentra en 0 javecoins.");
+                            return array( 'band' => false , "msn" =>  "No se puede hacer la consignación porque el crédito se encuentra en 0 javecoins.") ;
                         }
                     } else {
-                        return array( 'band' => false , "msn" =>  "No existe crédito de destino");
+                        return array( 'band' => false , "msn" =>  "No existe crédito de destino") ;
                     }
                 }
             } else {
-                return array( 'band' => false , "msn" =>  "Producto de origen no encontrado");
+                return array( 'band' => false , "msn" =>  "Producto de origen no encontrado") ;
             }
-            return array ( "band" => false , "msn" =>  "Unexpected error" );
+            return array ( "band" => false , "msn" =>  "Unexpected error" ) ;
         }
 
         public function VisitanteConsignar($tipoProducto, $idProductoDestino, $monto, $tipoMoneda, $cedula)
         {
-            $con = $this->connection ;
+
             $dataBase = new Database();
             $con = $dataBase->connection();
-            if ($tipoProducto == "ahorros") {
-                $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoDestino;
-                if ($con->query($sql2)->rowCount() != 0) {
-                    if ($tipoMoneda == "pesos") {
-                        $monto = $monto/1000;
-                    }
-                    foreach ($con->query($sql2) as $res2) {
-                        $idDuenoOr = $res2['id_dueno'];
-                        $res2 = $res2['monto'];
-                        echo $res2['monto'];
-                    }
-                    $montoDestino = $res2+$monto;
-                    $sql4 = 'UPDATE cuenta_ahorros SET monto = '.$montoDestino.' WHERE id = '.$idProductoDestino;
-                    $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado, tipo_t) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW(), "vis")';
-                    $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
-
-                    $con->query($sql4);
-                    $con->query($sql5);
-                    $con->query($sql6);
-                    return array ( "band" => false , "msn" =>  "Consignación Realizada" );
-                } else {
-                    return array ( "band" => false , "msn" =>  "No existe cuenta de ahorros de destino" );
-                }
-            } elseif ($tipoProducto == "credito") {
-                $sql2 = 'SELECT * FROM credito WHERE id = '.$idProductoDestino;
-                if ($con->query($sql2)->rowCount() != 0) {
-                    if ($tipoMoneda == "pesos") {
-                        $monto = $monto/1000;
-                    }
-                    foreach ($con->query($sql2) as $res2) {
-                        $idDuenoOr = $res2['id_dueno'];
-                        $res2 = $res2['monto'];
-                    }
-                    if ($res2 != 0) {
-                        $montoDestino = $res2-$monto;
-                        if ($montoDestino != 0) {
-                            $monto += $montoDestino;
-                        }
-                    }
-                    $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
-                    $sql5 = 'INSERT INTO consignacion_credito (id_origen,id_destino, monto, fecha_realizado, tipo_t) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW(), "vis")';
-                    $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
-                    $con->query($sql4);
-                    $con->query($sql5);
-                    $con->query($sql6);
-                    return array ( "band" => false , "msn" =>  "Consignación Realizada" );
-                    return array ( "band" => false , "msn" =>  "<br> Sobran ".intval($monto-$montoDestino) );
-                } else {
-                    return array ( "band" => false , "msn" =>  "No se puede hacer la consignación porque el crédito se encuentra en 0 javecoins." );
-                }
-            } else {
-                return array ( "band" => false , "msn" =>  "No existe crédito de destino" );
+            $sql0 = 'SELECT * FROM visitante WHERE cedula = '.$cedula;
+            if($con->query($sql0)->rowCount() == 0){
+              $sql0 = 'INSERT INTO visitante(cedula) VALUES ('.$cedula.')';
+              $con->query($sql0);
             }
-
-            return array ( "band" => false , "msn" =>  "Unexpected error" );
+            if ($tipoProducto == "ahorros"){
+              $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoDestino;
+              if($con->query($sql2)->rowCount() != 0){
+                if ($tipoMoneda == "pesos"){
+                  $monto = $monto/1000;
+                }
+                foreach ($con->query($sql2) as $res2) {
+                  $idDuenoOr = $res2['id_dueno'];
+                  $res2 = $res2['saldo'];
+                }
+                $montoDestino = $res2+$monto;
+                $sql4 = 'UPDATE cuenta_ahorros SET saldo ='.$montoDestino.' WHERE id = '.$idProductoDestino;
+                $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW())';
+                $sql6 = 'INSERT INTO mensajes(id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
+                $con->query($sql4);
+                $con->query($sql5);
+                $con->query($sql6);
+                return array ( "band" => true , "msn" =>  "Consignación Realizada" );
+              }else{
+                return array ( "band" => false , "msn" =>  "No existe cuenta de ahorros de destino" );
+              }
+            }elseif($tipoProducto == "credito"){
+              $sql2 = 'SELECT * FROM credito WHERE id = '.$idProductoDestino;
+              if($con->query($sql2)->rowCount() != 0){
+                if ($tipoMoneda == "pesos"){
+                  $monto = $monto/1000;
+                }
+                foreach ($con->query($sql2) as $res2) {
+                  $idDuenoOr = $res2['id_dueno'];
+                  $res2 = $res2['monto'];
+                }
+                if($res2 != 0){
+                  $montoDestino = $res2-$monto;
+                  if($montoDestino != 0)
+                  $monto += $montoDestino;
+                }
+                $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
+                $sql5 = 'INSERT INTO consignacion_credito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW())';
+                $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
+                $con->query($sql4);
+                $con->query($sql5);
+                $con->query($sql6);
+                return array ( "band" => true , "msn" =>  "Consignación Realizada" . " Sobran ".intval($monto-$montoDestino));
+              }else{
+                return array ( "band" => false , "msn" =>  "No se puede hacer la consignación porque el crédito se encuentra en 0 javecoins." );
+              }
+            }else{
+              return array ( "band" => false , "msn" =>  "No existe crédito de destino" );
+            }
         }
     }

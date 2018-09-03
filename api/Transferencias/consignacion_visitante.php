@@ -45,4 +45,7 @@ if ($res == "success") {
     echo json_encode(array('error' => "no_existe_visitante"));
   }
 
+}else{
+  http_response_code(400);
+  echo json_encode(array('error' => "no_existe_visitante"));
 }
