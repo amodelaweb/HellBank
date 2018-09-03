@@ -2,12 +2,12 @@
     include_once dirname(__FILE__) . '/Sistema.php';
     include_once dirname(__FILE__) . '/Usuario.php';
     include_once dirname(__FILE__) . '/Visitante.php';
-    include_once dirname(__FILE__) . '/CentroMensajes.php';
+    //include_once dirname(__FILE__) . '/CentroMensajes.php';
     include_once dirname(__FILE__) . '/CuentaAhorros.php';
     include_once dirname(__FILE__) . '/TarjetaCredito.php';
     include_once dirname(__FILE__) . '/Credito.php';
     include_once dirname(__FILE__) . '/Retiro.php';
-    include_once dirname(__FILE__) . '/Consignacion.php';
+    //include_once dirname(__FILE__) . '/Consignacion.php';
     include_once dirname(__FILE__) . '/ComprarTarjetaCredito.php';
 
 

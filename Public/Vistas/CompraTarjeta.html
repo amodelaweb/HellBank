@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="css/princUsVis.css">
+    <script src="./Logica/compra_tarjeta.js"></script>
     <title>Compra Tarjeta</title>
 </head>
 
@@ -21,8 +22,8 @@
     <h1>Compra Tarjeta de crédto</h1>
     <form>
         <div class="form-group">
-            <label for="formGroupExampleInput">Número producto origen</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese id">
+            <label for="formGroupExampleInput">Número tarjeta origen</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Id tarjeta">
             <br>
             <label for="formGroupExampleInput">Número de cuotas</label>
             <select name="cuotas">
@@ -35,7 +36,7 @@
             </select>
             <br>
             <label for="formGroupExampleInput">Monto</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Ingrese monto">
+            <input type="text" class="form-control" id="MontoComp" placeholder="Ingrese monto">
             <br>
             <label for="formGroupExampleInput">Tipo de moneda: </label>
             <div class="form-check form-check-inline">
@@ -47,7 +48,7 @@
                 <label class="form-check-label" for="inlineRadio1">Pesos</label>
             </div>
             <br>
-            <input type="submit" value="Comprar" class="btn btn-primary">
+            <input id="comprar" type="submit" value="Comprar" class="btn btn-primary">
         </div>
     </form>
 </body>
