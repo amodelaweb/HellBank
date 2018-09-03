@@ -1,12 +1,13 @@
 $(document).ready(function() {
+
   $('#ok_crear').click(function(e) {
     e.preventDefault();
 
     function getUrlVars() {
+      var combo = document.getElementById("cuentas_usr");
       var hash;
       var myJson = {};
-      myJson["cuenta_ahorros"] =  document.getElementById("cuenta_ahorros").value ;
-
+      myJson["cuenta_ahorros"] = combo.options[combo.selectedIndex].value;
       return JSON.stringify(myJson);
     }
 
@@ -21,7 +22,7 @@ $(document).ready(function() {
       data: test,
       ContentType: "application/json",
       headers: {
-        "x-api-key": window.localStorage.accessToken ,
+        "x-api-key": window.localStorage.accessToken,
       },
       success: function(response) {
         alert('Tarjeta de credito creada !');
@@ -33,7 +34,7 @@ $(document).ready(function() {
       }
     });
   });
-  if (window.localStorage.rol != "user"){
+  if (window.localStorage.rol != "user") {
     window.close();
     var para = document.createElement("P");
     alert('ABANDONE ESTA PAGINA WEB !!!');
@@ -48,7 +49,26 @@ $(document).ready(function() {
     window.location.href = 'http://www.burlingtonnews.net/hauntedtours-theweek.html';
     para.appendChild(t);
 
-  }else{
+  } else {
     console.log("Yei !!");
+
+    $.ajax({
+      url: "/HellBank/api/Cuentas_Ahorro/get_all.php",
+      type: 'GET',
+      dataType: 'json',
+      headers: {
+        "x-api-key": window.localStorage.accessToken,
+      },
+      success: function(response) {
+        $cuentas = response.cuentas_ahorro;
+        $.each($cuentas, function(i, option) {
+          $('#cuentas_usr').append($('<option/>').attr("value", option.id).text("ID : " + option.id + " - SALDO : " + option.saldo));
+        });
+
+      },
+      error: function(response) {
+        console.log(response);
+      }
+    });
   }
 });

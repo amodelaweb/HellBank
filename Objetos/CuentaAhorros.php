@@ -42,7 +42,7 @@
         public static function exist_cuenta($id, $conn)
         {
             try {
-                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_cuenta LIMIT 0,1';
+                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id = :id_cuenta LIMIT 0,1';
                 $sql = $conn->prepare($query);
                 $sql->bindParam(':id_cuenta', $id);
                 $sql->execute();
@@ -59,12 +59,14 @@
             return false;
         }
 
-        public static function getUser_Cuentas($id_user, $conn)
+        public static function getUser_Cuentas($id_user, $connx)
         {
             try {
-                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_dueno';
-                $sql = $conn->prepare($query);
+                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_dueno AND estado = :estado ';
+                $sql = $connx->prepare($query);
+                $estado = 'APROBADO';
                 $sql->bindParam(':id_dueno', $id_user);
+                $sql->bindParam(':estado', $estado);
                 $sql->execute();
                 $n = $sql->rowCount();
                 if ($n > 0) {
@@ -81,14 +83,45 @@
                         array_push($respuesta['cuentas_ahorro'], $cat_item);
                     }
 
-                    return array ( 'band' => true , 'res' =>  $respuesta) ;
-                }else{
-                  return array ( 'band' => false , 'res' => 'nul') ;
+                    return array( 'band' => true , 'res' =>  $respuesta) ;
+                } else {
+                    return array( 'band' => false , 'res' => 'nul') ;
                 }
             } catch (PDOException $e) {
-                return array ( 'band' => false , 'res' => 'nul') ;
+                return array( 'band' => false , 'res' => 'nul') ;
             }
-            return array ( 'band' => false , 'res' => 'nul') ;
+            return array( 'band' => false , 'res' => 'nul') ;
+        }
+
+        public static function get_single($id_cuenta,$conn)
+        {
+            try {
+                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id = :id_cuenta LIMIT 0,1';
+                $sql = $conn->prepare($query);
+                $sql->bindParam(':id_cuenta', $id_cuenta);
+                $sql->execute();
+                $n = $sql->rowCount();
+                if ($n > 0) {
+                    $respuesta = array( );
+                    $respuesta['cuenta_ahorro'] = array( );
+                    $fila = $sql->fetch(PDO::FETCH_ASSOC) ;
+                    extract($fila);
+                    $fila_r = array(
+                        'id' => $id,
+                        'tasa_interes' => $tasa_interes,
+                        'saldo' => $saldo,
+                        'cuota_manejo' => $cuota_manejo,
+                        'fecha_creado' => $fecha_creado);
+                    array_push($respuesta['cuenta_ahorro'], $fila_r);
+
+                    return array( 'band' => true , 'res' =>  $respuesta) ;
+                } else {
+                    return array( 'band' => false , 'res' => 'nul') ;
+                }
+            } catch (PDOException $e) {
+                return array( 'band' => false , 'res' => 'nul') ;
+            }
+            return array( 'band' => false , 'res' => 'nul') ;
         }
         /**
          * Get the value of Id

@@ -20,7 +20,7 @@
         http_response_code(200);
         echo json_encode($response_f['res']);
       }else{
-        http_response_code(204);
+        http_response_code(400);
         echo json_encode(
           array('mensaje' => 'No se encontraron cuentas de ahorro.')
         );
