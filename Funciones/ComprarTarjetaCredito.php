@@ -1,9 +1,11 @@
 <?php
-    include_once dirname(__FILE__) . "\Database.php";
-    $idTarjeta= $_POST['idOrigen'];
-    $numCuotas= $_POST['idOrigen'];
-    $mont= $_POST['idOrigen'];
-    $tipoMoneda= $_POST['idOrigen'];
+    include_once ('..'.'/Database.php');
+
+    $idTarjeta= $_POST['numTargeta'];
+    $numCuotas= $_POST['cuotas'];
+    $mont= $_POST['MontoComp'];
+    $tipoMoneda= $_POST['inlineRadioOptions'];
+
     comprar($idTarjeta,$numCuotas,$mont,$tipoMoneda);
         function comprar($idTarjeta,$numCuotas,$mont,$tipoMoneda){
           $dataBase = new Database();
@@ -16,7 +18,9 @@
               $sobre_cupo = $res1['sobre_cupo'];
               $id_dueno = $res1['id_dueno'];
             }
-            $saldo = ($cupoMaximo+$sobre_cupo)-$gastado;
+
+            $saldo = ($cupo_maximo+$sobre_cupo)-$gastado;
+            echo $saldo;
             if($saldo >= $mont){
               if ($tipoMoneda=="Pesos") {
                 $mont=$mont/1000;
