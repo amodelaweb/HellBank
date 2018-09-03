@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS retiro (
 CREATE TABLE IF NOT EXISTS consignacion_credito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   id_destino INT NOT  NULL,
-  tipo_t ENUM ('cliente' , 'vis') DEFAULT 'cliente' , 
+  tipo_t ENUM ('cliente' , 'vis') DEFAULT 'cliente' ,
   id_origen INT,
   monto FLOAT NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS consignacion_credito (
 CREATE TABLE IF NOT EXISTS consignacion_debito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   id_destino INT NOT  NULL,
-  tipo_t ENUM ('cliente' , 'vis') DEFAULT 'cliente' , 
+  tipo_t ENUM ('cliente' , 'vis') DEFAULT 'cliente' ,
   id_origen INT,
   monto FLOAT NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -156,9 +156,8 @@ CREATE TABLE IF NOT EXISTS producto_compra (
 CREATE TABLE IF NOT EXISTS mensajes (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   contenido TEXT NOT NULL,
-  FOREIGN KEY (id_origen)
-    REFERENCES usuarios (id)
-    ON UPDATE CASCADE ON DELETE RESTRICT,
+  id_origen INT NOT NULL,
+  id_destino INT NOT NULL, 
     FOREIGN KEY (id_destino)
       REFERENCES usuarios (id)
       ON UPDATE CASCADE ON DELETE RESTRICT,

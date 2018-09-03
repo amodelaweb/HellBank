@@ -10,24 +10,26 @@ include_once '../../config/Database.php';
 
 $database = new Database();
 $conn = $database->connection();
-$visitante_n = new Visitante($conn) ;
 
+$visitante_n = new Visitante($conn) ;
 $datos = json_decode(file_get_contents("php://input"));
 $datos->email = str_replace("%40","@",$datos->email);
 $visitante_n->setEmail($datos->email) ;
 $res = $visitante_n->exist_visitante() ;
-$cedula_vis = $visitante_n->getCedula() ;
+$cedula_vis = $visitante_n->getId() ;
 
-echo $datos->email;
 if ($res == "success") {
 
-  $consignacion_user = new Consignacion($conn) ;
+  $database2 = new Database();
+  $conn2 = $database2->connection();
+
+  $consignacion_user = new Consignacion($conn2) ;
 
   if (is_numeric($datos->monto)) {
 
-    $res = $consignacion_user->VisitanteConsignar($datos->tipo_destino, $datos->producto_destino, $datos->monto, $datos->tipo_moneda, $cedula_vis);
+    $res2 = $consignacion_user->VisitanteConsignar($datos->tipo_destino, $datos->producto_destino, $datos->monto, $datos->tipo_moneda, $cedula_vis);
 
-    if ($res['band'] == true ){
+    if ($res2['band'] == true ){
       http_response_code(200);
       echo json_encode(
         array('exito' => "Consignacion exitosa")

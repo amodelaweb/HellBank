@@ -6,14 +6,13 @@ $idProductoDestino = $_POST['idProductoDestino'];
 $cedula = $_POST['cedula'];
 $monto = $_POST['monto'];
 $tipoMoneda = $_POST['tipoMoneda'];
-$dataBase = new Database();
-$con = $dataBase->connection();
+
 VisitanteConsignar($tipoProducto,$idProductoDestino,$monto,$tipoMoneda,$cedula);
 function VisitanteConsignar($tipoProducto,$idProductoDestino,$monto,$tipoMoneda,$cedula){
   $dataBase = new Database();
   $con = $dataBase->connection();
-  $sql0 = 'SELECT * FROM visitante WHERE id = '.$cedula;
-  if(empty($con->query($sql0))){
+  $sql0 = 'SELECT * FROM visitante WHERE cedula = '.$cedula;
+  if($con->query($sql0)->rowCount() == 0){
     $sql0 = 'INSERT INTO visitante(cedula) VALUES ('.$cedula.')';
     $con->query($sql0);
   }
@@ -25,12 +24,12 @@ function VisitanteConsignar($tipoProducto,$idProductoDestino,$monto,$tipoMoneda,
       }
       foreach ($con->query($sql2) as $res2) {
         $idDuenoOr = $res2['id_dueno'];
-        $res2 = $res2['monto'];
+        $res2 = $res2['saldo'];
       }
       $montoDestino = $res2+$monto;
-      $sql4 = 'UPDATE cuenta_ahorros SET monto ='.$montoDestino.' WHERE id = '.$idProductoDestino;
+      $sql4 = 'UPDATE cuenta_ahorros SET saldo ='.$montoDestino.' WHERE id = '.$idProductoDestino;
       $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW())';
-      $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
+      $sql6 = 'INSERT INTO mensajes(id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
       $con->query($sql4);
       $con->query($sql5);
       $con->query($sql6);
@@ -67,6 +66,5 @@ function VisitanteConsignar($tipoProducto,$idProductoDestino,$monto,$tipoMoneda,
   }else{
     echo "No existe crédito de destino";
   }
-}
 }
 ?>
