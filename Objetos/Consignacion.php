@@ -99,8 +99,7 @@
         public function VisitanteConsignar($tipoProducto, $idProductoDestino, $monto, $tipoMoneda, $cedula)
         {
 
-            $dataBase = new Database();
-            $con = $dataBase->connection();
+            $con = $this->connection ; 
             $sql0 = 'SELECT * FROM visitante WHERE cedula = '.$cedula;
             if($con->query($sql0)->rowCount() == 0){
               $sql0 = 'INSERT INTO visitante(cedula) VALUES ('.$cedula.')';

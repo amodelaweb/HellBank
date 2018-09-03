@@ -37,7 +37,7 @@ if ($res == "success") {
     }else{
       http_response_code(200);
       echo json_encode(
-        array('error' => $res['msn'])
+        array('error' => $res2['msn'])
       );
     }
   } else {
