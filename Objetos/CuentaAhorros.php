@@ -62,11 +62,10 @@
         public static function getUser_Cuentas($id_user, $connx)
         {
             try {
-                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_dueno AND estado = :estado ';
+                $query = 'SELECT * FROM ' . 'cuenta_ahorros' . ' WHERE id_dueno = :id_dueno';
                 $sql = $connx->prepare($query);
                 $estado = 'APROBADO';
                 $sql->bindParam(':id_dueno', $id_user);
-                $sql->bindParam(':estado', $estado);
                 $sql->execute();
                 $n = $sql->rowCount();
                 if ($n > 0) {

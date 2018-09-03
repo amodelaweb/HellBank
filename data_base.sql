@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS retiro (
 CREATE TABLE IF NOT EXISTS consignacion_credito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   id_destino INT NOT  NULL,
+  tipo_t ENUM ('cliente' , 'vis') DEFAULT 'cliente' , 
   id_origen INT,
   monto FLOAT NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -119,6 +120,7 @@ CREATE TABLE IF NOT EXISTS consignacion_credito (
 CREATE TABLE IF NOT EXISTS consignacion_debito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   id_destino INT NOT  NULL,
+  tipo_t ENUM ('cliente' , 'vis') DEFAULT 'cliente' , 
   id_origen INT,
   monto FLOAT NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -130,6 +132,7 @@ CREATE TABLE IF NOT EXISTS consignacion_debito (
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS compra_credito (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  cuotas_restantes INT,
   id_producto INT NOT  NULL,
   monto FLOAT NOT NULL,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -187,4 +190,3 @@ INSERT INTO operaciones_admin (nombre_operacion) VALUES ('aprobar_credito'),
                                                             ('fin_mes') ,
                                                             ('aprueba_sobrecupo');
 /*--------------------------------------------------------------------------------------------*/
-
