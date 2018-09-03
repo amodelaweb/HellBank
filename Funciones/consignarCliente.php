@@ -6,31 +6,33 @@
     $idProductoDestino = $_POST['idProductoDestino'];
     $monto = $_POST['monto'];
     $tipoMoneda = $_POST['tipoMoneda'];
-    $dataBase = new Database();
-    $con = $dataBase->connection();
     ClienteConsignar($idProductoOrigen,$tipoProducto,$idProductoDestino,$monto,$tipoMoneda);
     function ClienteConsignar($idProductoOrigen,$tipoProducto,$idProductoDestino,$monto,$tipoMoneda){
+        $dataBase = new Database();
+        $con = $dataBase->connection();
         $sql1 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoOrigen;
         if(!empty($con->query($sql1))){
             if ($tipoProducto == "ahorros"){
                 $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoDestino;
-                if(!empty($con->query($sql2))){
+                if($con->query($sql2)->rowCount() != 0){
                     if ($tipoMoneda == "pesos"){
                         $monto = $monto/1000;
                     }
                     foreach ($con->query($sql1) as $res1) {
-                        $res1 = $res1['monto'];
+                        $idDuenoOr = $res1['id_dueno'];  
+                        $res1 = $res1['saldo'];              
                     }
                     $montoOrigen = $res1-$monto;
                     foreach ($con->query($sql2) as $res2) {
-                        $res2 = $res2['monto'];
+                        $idDuenoDes = $res2['id_dueno'];
+                        $res2 = $res2['saldo'];
                     }
                     $montoDestino = $res2+$monto;
                     if($res1 >= $monto){
-                        $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
-                        $sql4 = 'UPDATE cuenta_ahorros SET monto ='.$montoDestino.' WHERE id = '.$idProductoDestino;
+                        $sql3 = 'UPDATE cuenta_ahorros SET saldo ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
+                        $sql4 = 'UPDATE cuenta_ahorros SET saldo ='.$montoDestino.' WHERE id = '.$idProductoDestino;
                         $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
-                        $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idProductoOrigen.','.$idProductoDestino.',"Se ha hecho una consignación por '.$monto.'")';
+                        $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idDuenoOr.','.$idDuenoDes.',"Se ha hecho una consignación por '.$monto.'")';
                         $con->query($sql3);
                         $con->query($sql4);
                         $con->query($sql5);
@@ -44,15 +46,17 @@
                 }
             }elseif($tipoProducto == "credito"){
                 $sql2 = 'SELECT * FROM credito WHERE id = '.$idProductoDestino;
-                if(!empty($con->query($sql2))){
+                if($con->query($sql2)->rowCount() != 0){
                     if ($tipoMoneda == "pesos"){
                         $monto = $monto/1000;
                     }
                     foreach ($con->query($sql1) as $res1) {
-                        $res1 = $res1['monto'];
+                        $idDuenoOr = $res1['id_dueno'];  
+                        $res1 = $res1['saldo'];
                     }
                     $montoOrigen = $res1-$monto;
                     foreach ($con->query($sql2) as $res2) {
+                        $idDuenoDes = $res2['id_dueno'];
                         $res2 = $res2['monto'];
                     }
                     if($res2 != 0){
@@ -61,10 +65,10 @@
                             if($montoDestino != 0){
                                 $montoOrigen += $montoDestino;
                             }
-                            $sql3 = 'UPDATE cuenta_ahorros SET monto ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
+                            $sql3 = 'UPDATE cuenta_ahorros SET saldo ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
                             $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
-                            $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
-                            $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idProductoOrigen.','.$idProductoDestino.',"Se ha hecho una consignación por '.$monto.'")';
+                            $sql5 = 'INSERT INTO consignacion_credito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$idProductoOrigen.','.$idProductoDestino.','.$monto.',NOW())';
+                            $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idDuenoOr.','.$idDuenoDes.',"Se ha hecho una consignación por '.$monto.'")';
                             $con->query($sql3);
                             $con->query($sql4);
                             $con->query($sql5);

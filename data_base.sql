@@ -152,8 +152,6 @@ CREATE TABLE IF NOT EXISTS producto_compra (
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS mensajes (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
-  id_origen INT NOT NULL,
-  id_destino INT NOT NULL,
   contenido TEXT NOT NULL,
   FOREIGN KEY (id_origen)
     REFERENCES usuarios (id)
@@ -170,9 +168,23 @@ CREATE TABLE IF NOT EXISTS sistema (
   cuota_manejo_default FLOAT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 /*--------------------------------------------------------------------------------------------*/
+CREATE TABLE IF NOT EXISTS transferencias_externas (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  banco_origen VARCHAR(50) NOT NULL,
+  banco_destino VARCHAR(50) NOT NULL,
+  id_origen INT,
+  monto FLOAT NOT NULL,
+  id_destino INT,
+  fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
+  tipo_trans VARCHAR(200) NOT NULL,
+  PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+/*--------------------------------------------------------------------------------------------*/
 INSERT INTO operaciones_admin (nombre_operacion) VALUES ('aprobar_credito'),
                                                             ('aprobar_ahorros'),
                                                             ('aprobar_tarjeta_credito'),
                                                             ('aprueba_cupo') ,
+                                                            ('fin_mes') ,
                                                             ('aprueba_sobrecupo');
 /*--------------------------------------------------------------------------------------------*/
+
