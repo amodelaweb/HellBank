@@ -223,6 +223,28 @@ class Credito{
       }
       return array( 'band' => false , 'res' => 'nul') ;
     }
+    public function upDateCredito($id_credito, $tasa_interes, $interes_mora ,$estado)
+    {
+      
+      $query = 'UPDATE ' . 'credito' . '
+      SET tasa_interes = :tasa_interes, interes_mora = :interes_mora,  estado = :estado
+      WHERE id = :id';
+
+      $stmt = $this->connection->prepare($query);
+
+      $value = htmlspecialchars(strip_tags($value));;
+
+      $stmt->bindParam(':id', $id_credito);
+      $stmt->bindParam(':tasa_interes', $tasa_interes);
+      $stmt->bindParam(':interes_mora', $interes_mora);
+      $stmt->bindParam(':estado', $estado);
+
+      if($stmt->execute()) {
+        return true;
+      }
+
+      return false;
+    }
 
     /**
     * Get the value of Id

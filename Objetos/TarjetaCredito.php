@@ -201,6 +201,44 @@ class TarjetaCredito
         }
         return array( 'band' => false , 'res' => 'nul') ;
       }
+
+      public function upDateTarjetaCredito($id_tarjeta_credito, $id_ahorros, $cupo_maximo ,$sobre_cupo , $tasa_interes, $cuota_manejo , $estado)
+      {
+
+        $query = 'UPDATE ' . 'tarjeta_credito' . ' SET estado = :estado,
+                                                       id_ahorros = :id_ahorros,
+                                                       cupo_maximo = :cupo_maximo,
+                                                       sobre_cupo = :sobre_cupo,
+                                                       tasa_interes = :tasa_interes,
+                                                       cuota_manejo = :cuota_manejo WHERE id = :id';
+        $stmt = $this->connection->prepare($query);
+
+        $id_tarjeta_credito = htmlspecialchars(strip_tags($id_tarjeta_credito));
+        $id_ahorros = htmlspecialchars(strip_tags($id_ahorros));
+        $cupo_maximo = htmlspecialchars(strip_tags($cupo_maximo));
+        $sobre_cupo = htmlspecialchars(strip_tags($sobre_cupo));
+        $tasa_interes = htmlspecialchars(strip_tags($tasa_interes));
+        $cuota_manejo = htmlspecialchars(strip_tags($cuota_manejo));
+        $estado = htmlspecialchars(strip_tags($estado));
+
+        $stmt->bindParam(':estado', $estado);
+        $stmt->bindParam(':id_ahorros', $id_ahorros);
+        $stmt->bindParam(':cupo_maximo', $cupo_maximo);
+        $stmt->bindParam(':sobre_cupo', $sobre_cupo);
+        $stmt->bindParam(':tasa_interes', $tasa_interes);
+        $stmt->bindParam(':cuota_manejo', $cuota_manejo);
+        $stmt->bindParam(':id', $id_tarjeta_credito);
+        try{
+          if($stmt->execute()) {
+            return true;
+          }
+        } catch (PDOException $e) {
+          return false ; 
+        }
+
+        return false;
+      }
+
       /**
       * Get the value of Id
       *

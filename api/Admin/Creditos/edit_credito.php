@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: PUT');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-include_once '../../../Objetos/Sistema.php';
+include_once '../../../Objetos/Credito.php';
 include_once '../../../config/Database.php';
 include_once '../../../config/AuthJson.php';
 
@@ -17,25 +17,19 @@ if ($res) {
   if (Token::is_valid_admin($my_token)) {
     $database = new Database();
     $conn = $database->connection();
-
-    $sistema_user = new Sistema(0, $conn) ;
-
     $datos = json_decode(file_get_contents("php://input"));
 
-    if ($datos->fila == 'interes_aumento'){
-      $resultado = $sistema_user->upDateInteresAhorros($datos->valor) ;
-    }else if ($datos->fila == 'interes_inter_banco'){
-      $resultado = $sistema_user->upDateInteresInterBanco($datos->valor) ;
-    }else if ($datos->fila == 'cuota_manejo_default'){
-      $resultado = $sistema_user->upDateCuota_Manejo($datos->valor) ;
-    }else{
-      $resultado = false ;
+    if ($datos->estado != "APROBADO" && $datos->estado != "NO_APROBADO" && $datos->estado != "EN_ESPERA"){
+      http_response_code(400);
+      die();
     }
+    $credito_user = new Credito($conn) ;
+    $resultado = $credito_user->upDateCredito($datos->id_credito, $datos->tasa_interes, $datos->interes_mora, $datos->estado) ;
 
     if ($resultado == true){
       http_response_code(200);
       echo json_encode(
-        array('exito' => $datos->fila . " actualizado")
+        array('exito' => "Credito actualizado")
       );
     }else{
       http_response_code(400);

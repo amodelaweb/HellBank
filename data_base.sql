@@ -165,6 +165,7 @@ CREATE TABLE IF NOT EXISTS mensajes (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS sistema (
+  id INT PRIMARY KEY,
   interes_aumento FLOAT,
   interes_inter_banco FLOAT,
   cuota_manejo_default FLOAT
@@ -188,4 +189,6 @@ INSERT INTO operaciones_admin (nombre_operacion) VALUES ('aprobar_credito'),
                                                             ('aprueba_cupo') ,
                                                             ('fin_mes') ,
                                                             ('aprueba_sobrecupo');
+/*--------------------------------------------------------------------------------------------*/
+INSERT INTO sistema (id, interes_aumento, interes_inter_banco, cuota_manejo_default) VALUES ( '1' , '1.3' , '1.7' , '15') ;
 /*--------------------------------------------------------------------------------------------*/
