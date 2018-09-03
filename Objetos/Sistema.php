@@ -80,5 +80,14 @@ class Sistema{
     return false;
   }
 
+  public function finMes()
+  {
+
+
+    //code
+    
+    return array("band" => false , "msn" => "Foreign error") ;
+  }
+
 }
 ?>
