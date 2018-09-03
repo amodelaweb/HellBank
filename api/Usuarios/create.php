@@ -29,7 +29,7 @@
     $res = str_replace("for key","",$res);
     $res = str_replace("1062","",$res);
 
-    http_response_code(201);
+    http_response_code(200);
     echo json_encode(
       array('Resultado' =>  $res)
     );

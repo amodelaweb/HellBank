@@ -25,14 +25,12 @@ $(document).ready(function(){
       url: "/HellBank/api/Usuarios/create.php",
       data: test,
       ContentType:"application/json",
-
       success:function(response){
         alert('Creado Exitosamente');
         console.log(response);
         window.location.href = './Login.html';
       },
       error:function(response){
-        alert('Error Creando Usuario ' + response.responseJSON.error);
         console.log(response);
       }
 
