@@ -1,5 +1,5 @@
 <?php
-include_once dirname(__FILE__) . '/config.php';
+include_once dirname(__FILE__) . '/config/config.php';
 
 class Database
 {
@@ -13,6 +13,7 @@ class Database
         } catch (PDOException $e) {
             echo "Error de coneccion : " .  $e->getMessage();
         }
+
          return $this->conn;
     }
 }

@@ -152,8 +152,6 @@ CREATE TABLE IF NOT EXISTS producto_compra (
 /*--------------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS mensajes (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
-  id_origen INT NOT NULL,
-  id_destino INT NOT NULL,
   contenido TEXT NOT NULL,
   FOREIGN KEY (id_origen)
     REFERENCES usuarios (id)
@@ -189,3 +187,4 @@ INSERT INTO operaciones_admin (nombre_operacion) VALUES ('aprobar_credito'),
                                                             ('fin_mes') ,
                                                             ('aprueba_sobrecupo');
 /*--------------------------------------------------------------------------------------------*/
+

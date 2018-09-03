@@ -16,7 +16,7 @@
                 $tasa = $fila['tasa_interes'];
                 $monto = $monto+($tasa*$monto/100);
                 $sql2 = 'UPDATE cuenta_ahorros SET saldo='.$monto.' WHERE id='.$idCuenta;
-                $sql3 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES(1,'.$idCuenta.',"Se ha hecho un aumento de saldo por fin de mes.")';
+                $sql3 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES(1,'.$idDueno.',"Se ha hecho un aumento de saldo por fin de mes.")';
                 $sql4 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES(1,'.$idCuenta.',6,NOW())';
                 $con->query($sql2);
                 $con->query($sql3);
