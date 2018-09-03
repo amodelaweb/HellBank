@@ -11,16 +11,16 @@
           $dataBase = new Database();
           $con = $dataBase->connection();
           $sql1 = 'SELECT * FROM tarjeta_credito WHERE id = '.$idTarjeta;
-          if(!empty($con->query($sql1))){
+          if(!empty($con->query($sql1))&&($estado=="APROBADO")){
             foreach ($con->query($sql1) as $res1) {
               $cupo_maximo = $res1['cupo_maximo'];
               $gastado = $res1['gastado'];
               $sobre_cupo = $res1['sobre_cupo'];
               $id_dueno = $res1['id_dueno'];
+              $estado = $res1['estado'];
             }
 
             $saldo = ($cupo_maximo+$sobre_cupo)-$gastado;
-            echo $saldo;
             if($saldo >= $mont){
               if ($tipoMoneda=="Pesos") {
                 $mont=$mont/1000;
@@ -36,9 +36,8 @@
             }else{
                 echo "No hay fondos suficientes";
             }
-        }else{
+          }else{
             echo "Producto de origen no existe";
-
           }
         }
 

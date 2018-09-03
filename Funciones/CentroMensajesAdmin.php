@@ -19,6 +19,35 @@
 
 <body>
         <h1>Centro de Mensajes</h1>
+        <?php
+            include_once ('..'.'/Database.php');
+            $dataBase = new Database();
+            $con = $dataBase->connection();
+            $id_user = 1;
+            $sql1 = 'SELECT * FROM tarjeta_credito WHERE estado = EN_ESPERA ';
+            if($con->query($sql1)->rowCount() != 0){
+                $info = array();
+                $str_datos = "";
+                $str_datos.= '<table style = "width:100%" border =:"1px solid black">';
+                $str_datos.= '<tr>';
+                $str_datos .= '<th>Id_origen</th>';
+                $str_datos .= '<th>Fecha_solicitud</th>';
+                $str_datos.= '</tr>';
+                foreach ($con->query($sql1) as $fila) {
+                    array_push($info,array($fila['id_origen'], $fila['fecha_creado']));
+                }
+                foreach($info as $elm){
+                    $str_datos.= '<tr>';
+                    $str_datos.= '<td>'.$elm[0].'</td>';
+                    $str_datos.= '<td>'.$elm[1].'</td>';
+                    $str_datos.= '</tr>';
+                }
+                $str_datos.= '</table>';
+                echo $str_datos;
+            }else{
+                echo "No hay mensajes.";
+            }
+        ?>
 </body>
 
 </html>

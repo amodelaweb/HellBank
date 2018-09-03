@@ -20,7 +20,7 @@
 <body>
         <h1>Centro de Mensajes</h1>
         <?php
-            include_once dirname(__FILE__) . '/Database.php';
+          include_once ('..'.'/Database.php');
             $dataBase = new Database();
             $con = $dataBase->connection();
             $id_user = 1;
@@ -35,7 +35,7 @@
                 $str_datos .= '<th>Mensaje</th>';
                 $str_datos.= '</tr>';
                 foreach ($con->query($sql1) as $fila) {
-                    array_push($info,array($fila['id_origen'], $fila['id_destino'], $fila['contenido']));                       
+                    array_push($info,array($fila['id_origen'], $fila['id_destino'], $fila['contenido']));
                 }
                 foreach($info as $elm){
                     $str_datos.= '<tr>';
@@ -43,7 +43,7 @@
                     $str_datos.= '<td>'.$elm[1].'</td>';
                     $str_datos.= '<td>'.$elm[2].'</td>';
                     $str_datos.= '</tr>';
-                }            
+                }
                 $str_datos.= '</table>';
                 echo $str_datos;
             }else{
