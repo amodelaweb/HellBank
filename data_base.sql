@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS mensajes (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   contenido TEXT NOT NULL,
   id_origen INT NOT NULL,
-  id_destino INT NOT NULL, 
+  id_destino INT NOT NULL,
     FOREIGN KEY (id_destino)
       REFERENCES usuarios (id)
       ON UPDATE CASCADE ON DELETE RESTRICT,
