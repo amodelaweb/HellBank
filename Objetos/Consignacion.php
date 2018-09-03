@@ -98,8 +98,9 @@
 
         public function VisitanteConsignar($tipoProducto, $idProductoDestino, $monto, $tipoMoneda, $cedula)
         {
-
             $con = $this->connection ;
+            $dataBase = new Database();
+            $con = $dataBase->connection();
             if ($tipoProducto == "ahorros") {
                 $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoDestino;
                 if ($con->query($sql2)->rowCount() != 0) {
@@ -109,11 +110,13 @@
                     foreach ($con->query($sql2) as $res2) {
                         $idDuenoOr = $res2['id_dueno'];
                         $res2 = $res2['monto'];
+                        echo $res2['monto'];
                     }
                     $montoDestino = $res2+$monto;
-                    $sql4 = 'UPDATE cuenta_ahorros SET monto ='.$montoDestino.' WHERE id = '.$idProductoDestino;
-                    $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW())';
+                    $sql4 = 'UPDATE cuenta_ahorros SET monto = '.$montoDestino.' WHERE id = '.$idProductoDestino;
+                    $sql5 = 'INSERT INTO consignacion_debito (id_origen,id_destino, monto, fecha_realizado, tipo_t) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW(), "vis")';
                     $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
+
                     $con->query($sql4);
                     $con->query($sql5);
                     $con->query($sql6);
@@ -138,7 +141,7 @@
                         }
                     }
                     $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
-                    $sql5 = 'INSERT INTO consignacion_credito (id_origen,id_destino, monto, fecha_realizado) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW())';
+                    $sql5 = 'INSERT INTO consignacion_credito (id_origen,id_destino, monto, fecha_realizado, tipo_t) VALUES ('.$cedula.','.$idProductoDestino.','.$monto.',NOW(), "vis")';
                     $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$cedula.','.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
                     $con->query($sql4);
                     $con->query($sql5);
