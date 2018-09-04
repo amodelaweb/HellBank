@@ -2,9 +2,8 @@
     include_once dirname(__FILE__) . "\Database.php";
     include_once dirname(__FILE__) . "\ManejoCorreo.php";
 
-    CobrarTarjetasCredito();
 
-    function CobrarTarjetasCredito(){
+    function CobrarTarjetasCredito($mesActual){
         $dataBase = new Database();
         $con = $dataBase->connection();
         
@@ -19,12 +18,11 @@
                 $monto = $fila['monto'];
                 $pago = $monto/$numeroCuotas;
                 date_default_timezone_set('America/Bogota');
-                $fechaActual = intval(date('d'));
                 $fechaCompra = strtotime( $fechaCompra );
-                $fechaCompra = intval(date( 'd', $fechaCompra ));
-                $difDias = $fechaActual - $fechaCompra;
+                $fechaCompra = intval(date( 'm', $fechaCompra ));
+                $difMes = $mesActual - $fechaCompra;
                 
-                if ($difDias >= 0){
+                if ($difMes >= 1){
                     $cuotasRestantes = $cuotasRestantes - 1;
                     $sql2 = 'SELECT * FROM tarjeta_credito WHERE id='.$idTarjeta;
                     if(!empty($con->query($sql2))){
@@ -41,7 +39,7 @@
                                 $sql4 = 'UPDATE cuenta_ahorros SET saldo='.intval($saldo-$pago).' WHERE id='.$idAhorros;
                                 $sql5 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES(1,'.$idDueno.',"Se ha descontado de la cuenta de ahorros para pagar una compra de '.$monto.' hecha con tarjeta de crédito.")';
                                 $sql6 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES(1,'.$idTarjeta.',6,NOW())';
-                                $sql7 = 'UPDATE compra_credito SET monto='.intval($monto-$pago).' cuotas_restante='.intval($cuotasRestantes).' WHERE id_producto='.$idTarjeta;
+                                $sql7 = 'UPDATE compra_credito SET monto='.intval($monto-$pago).', cuotas_restantes='.intval($cuotasRestantes).' WHERE id_producto='.$idTarjeta;
                                 if($cuotasRestantes == 0){
                                     $sql8 = 'DELETE FROM compra_credito WHERE id_producto='.$idTarjeta;
                                     $con->query($sql8);

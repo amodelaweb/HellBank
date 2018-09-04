@@ -1,7 +1,6 @@
 <?php
     include_once dirname(__FILE__) . "\Database.php";
 
-    CobrarCuotaManejoTarjetas();
     function CobrarCuotaManejoTarjetas(){
         $dataBase = new Database();
         $con = $dataBase->connection();
@@ -11,7 +10,7 @@
         if(!empty($con->query($sql0))){
             foreach ($con->query($sql0) as $fila) {
                 $idAhorros = $fila['id'];
-                $idDueno = $file['id_dueno'];
+                $idDueno = $fila['id_dueno'];
                 $cuota = $fila['cuota_manejo'];
                 $monto = $fila['saldo'];
                 if($monto>=$cuota){
@@ -29,7 +28,7 @@
         if(!empty($con->query($sql1))){
             foreach ($con->query($sql1) as $fila) {
                 $idTarjeta = $fila['id'];
-                $idDueno = $file['id_dueno'];
+                $idDueno = $fila['id_dueno'];
                 $cuota = $fila['cuota_manejo'];
                 $idAhorros = $fila['id_ahorros'];
                 $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id='.$idAhorros;

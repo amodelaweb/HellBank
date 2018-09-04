@@ -22,7 +22,7 @@ if ($res) {
         $datos = json_decode(file_get_contents("php://input"));
 
         if (is_numeric($datos->monto)) {
-          
+
             $res = $consignacion_user->ClienteConsignar($datos->producto_origen, $datos->tipo_destino, $datos->producto_destino, $datos->monto, $datos->tipo_moneda);
             if ($res['band'] == true ){
               http_response_code(200);
@@ -30,7 +30,7 @@ if ($res) {
               array('exito' => "Consignacion exitosa")
               );
             }else{
-              http_response_code(200);
+              http_response_code(400);
               echo json_encode(
               array('error' => $res['msn'])
               );
