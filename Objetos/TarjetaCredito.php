@@ -180,6 +180,7 @@ class TarjetaCredito
             $cat_item = array(
               'id' => $id,
               'estado' => $estado,
+              'id_dueno' => $id_dueno,
               'id_ahorros' => $id_ahorros,
               'cupo_maximo' => $cupo_maximo,
               'gastado' => $gastado,
@@ -233,7 +234,7 @@ class TarjetaCredito
             return true;
           }
         } catch (PDOException $e) {
-          return false ; 
+          return false ;
         }
 
         return false;
