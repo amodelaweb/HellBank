@@ -100,7 +100,7 @@ class Sistema{
             $monto = $fila['monto'];
             $idDueno = $fila['id_dueno'];
             $idCredito = $fila['id'];
-            
+
             $pago = $monto;
             $con->beginTransaction();
             $sql1 = 'SELECT * FROM cuenta_ahorros WHERE id_dueno='.$idDueno.' ORDER BY saldo DESC';
@@ -169,10 +169,10 @@ class Sistema{
 
 private function CobrarTarjetasCredito($mesActual){
   $con =$this->connection->connection();
-  
+
   $sql1 = 'SELECT * FROM compra_credito';
   if($con->query($sql1)->rowCount() != 0){
-      
+
       foreach ($con->query($sql1) as $fila) {
           $fechaCompra = $fila['fecha_realizado'];
           $numeroCuotas = $fila['numero_cuotas'];
@@ -184,7 +184,7 @@ private function CobrarTarjetasCredito($mesActual){
           $fechaCompra = strtotime( $fechaCompra );
           $fechaCompra = intval(date( 'm', $fechaCompra ));
           $difMes = $mesActual - $fechaCompra;
-          
+
           if ($difMes >= 1){
               $cuotasRestantes = $cuotasRestantes - 1;
               $sql2 = 'SELECT * FROM tarjeta_credito WHERE id='.$idTarjeta;
@@ -232,7 +232,7 @@ private function CobrarTarjetasCredito($mesActual){
 
 private function AumentarSaldoCA(){
   $con =$this->connection->connection();
-  
+
   $sql1 = 'SELECT * FROM cuenta_ahorros';
   if(!empty($con->query($sql1))){
       foreach ($con->query($sql1) as $fila) {
@@ -264,7 +264,7 @@ private function CobrarCuotaManejoTarjetas(){
           if($monto>=$cuota){
               $sql3 = 'UPDATE cuenta_ahorros SET saldo='.intval($monto-$cuota).' WHERE id='.$idAhorros;
               $sql4 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES(1,'.$idDueno.',"Se ha hecho un descuento de '.$cuota.' para pago de cuota de manejo por fin de mes.")';
-              $sql5 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES(1,'.$idAhorros.',6,NOW())';                    
+              $sql5 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES(1,'.$idAhorros.',6,NOW())';
               $con->query($sql3);
               $con->query($sql4);
               $con->query($sql5);
@@ -286,7 +286,7 @@ private function CobrarCuotaManejoTarjetas(){
           if($monto>=$cuota){
               $sql3 = 'UPDATE cuenta_ahorros SET saldo='.intval($monto-$cuota).' WHERE id='.$idAhorros;
               $sql4 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES(1,'.$idDueno.',"Se ha hecho un descuento de '.$cuota.' para pago de cuota de manejo por fin de mes.")';
-              $sql5 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES(1,'.$idTarjeta.',6,NOW())';                    
+              $sql5 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES(1,'.$idTarjeta.',6,NOW())';
               $con->query($sql3);
               $con->query($sql4);
               $con->query($sql5);

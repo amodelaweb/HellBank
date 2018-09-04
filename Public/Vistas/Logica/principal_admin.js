@@ -1,4 +1,41 @@
 $(document).ready(function() {
+
+  $('#fin_btn').click(function(e) {
+    e.preventDefault();
+
+    function getUrlVars1() {
+      var hash;
+      var myJson = {};
+      myJson["fecha"] = document.getElementById("fecha").value  ;
+
+      return JSON.stringify(myJson);
+    }
+
+    var test = getUrlVars1();
+
+    localStorage.setItem('gameStorage', test);
+    console.log("ok");
+    $.ajax({
+      type: "POST",
+      dataType: 'JSON',
+      url: "/HellBank/api/Admin/Sistema/fin_de_mes.php",
+      data: test,
+      ContentType: "application/json",
+      headers: {
+        "x-api-key": window.localStorage.accessToken ,
+      },
+      success: function(response) {
+        alert('FIn de mes correcto');
+        console.log(response);
+      },
+      error: function(response) {
+        console.log(response);
+        alert("Error : " + response.responseJSON.error);
+      }
+    });
+  });
+
+
 $('#gurdar_b').click(function(e) {
   e.preventDefault();
 
