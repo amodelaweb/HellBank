@@ -17,7 +17,7 @@ if ($res) {
     $conn = $database->connection();
 
     $sistema_user = new Sistema(0, $conn) ;
-    $resultado = $sistema_user->finMes() ;
+    $resultado = $sistema_user->finMes($my_token->getId(),$datos->$fecha) ;
     if ($resultado['band'] == true){
       http_response_code(200);
       echo json_encode(
