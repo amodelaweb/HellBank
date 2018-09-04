@@ -91,10 +91,11 @@ class TarjetaCredito
   public static function getUser_Tarjetas($id_user, $connx)
   {
     try {
-      $query = 'SELECT * FROM ' . 'tarjeta_credito' . ' WHERE id_dueno = :id_dueno';
+      $query = 'SELECT * FROM ' . 'tarjeta_credito' . ' WHERE id_dueno = :id_dueno AND estado = :estado';
       $sql = $connx->prepare($query);
       $estado = 'APROBADO';
       $sql->bindParam(':id_dueno', $id_user);
+      $sql->bindParam(':estado', $estado);
       $sql->execute();
       $n = $sql->rowCount();
       if ($n > 0) {
@@ -233,7 +234,7 @@ class TarjetaCredito
             return true;
           }
         } catch (PDOException $e) {
-          return false ; 
+          return false ;
         }
 
         return false;
