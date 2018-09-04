@@ -40,7 +40,7 @@
         public function exist_visitante()
         {
           try {
-              $query = 'SELECT id FROM ' . 'visitante' . ' WHERE emailadd = :emailadd LIMIT 0,1';
+              $query = 'SELECT id, cedula FROM ' . 'visitante' . ' WHERE emailadd = :emailadd LIMIT 0,1';
               $sql = $this->connection->prepare($query);
               $this->email = htmlspecialchars(strip_tags($this->email));
               $sql->bindParam(':emailadd', $this->email);
@@ -49,6 +49,7 @@
 
               if (!empty($res)) {
                   $this->id = $res['id'];
+                  $this->cedula = $res['cedula'];
                   return "success";
               } else {
                   return "error" ;

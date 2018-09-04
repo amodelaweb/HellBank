@@ -6,31 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-    crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
+  crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
+  crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
+  crossorigin="anonymous"></script>
   <script src="./Logica/principal_admin.js"></script>
+  <script src="./Logica/gest.js"></script>
   <title>Menu Admin</title>
   <link rel="stylesheet" type="text/css" href="css/princUsVis.css">
 </head>
 
 <body>
   <h1>Menú Principal</h1>
-  <form method="POST" action="\SetearIntereses.php">
+  <form >
     <div class="form-group">
       <label for="formGroupExampleInput">Interés cuentas de ahorro</label>
-      <input type="text" name="iCA" value="0" class="form-control" id="formGroupExampleInput" placeholder="Ingrese interés">
+      <input id="interes_aumento" type="text" name="iCA" value="0" class="form-control" placeholder="Ingrese interés">
       <br>
       <label for="formGroupExampleInput">Interés crédito visitantes</label>
-      <input type="text" name="iCV" value="0" class="form-control" id="formGroupExampleInput" placeholder="Ingrese interés">
+      <input type="text" name="iCV" value="0" class="form-control" id="cuota_manejo_default" placeholder="Ingrese interés">
       <br>
       <label for="formGroupExampleInput">Costo operaciones entre bancos</label>
-      <input type="text" name="COB" value="0" class="form-control" id="formGroupExampleInput" placeholder="Ingrese costo">
-      <input type="submit" value="Guardar" class="btn btn-primary">
+      <input type="text" name="COB" value="0" class="form-control" id="interes_inter_banco" placeholder="Ingrese costo">
+      <input id="gurdar_b" type="submit" value="Guardar" class="btn btn-primary">
       <br>
     </div>
   </form>
@@ -40,18 +40,18 @@
         <button type="submit"  class="themeBtn">Centro de Mensajes</button>
       </div>
     </form>
-    <form method="post">
+    <form action="MostrarUsuarios.html">
       <div class="container-fluid  margin">
-        <button href="https://www.behance.net/sakiran" target="_blank" class="themeBtn">Ver usuarios</button>
+        <button href="https://www.behance.net/sakiran" k" class="themeBtn">Ver usuarios</button>
       </div>
     </form>
     <form method="post" action="/FindeMes.php">
-        <label for="formGroupExampleInput">Ingrese fecha a facturar</label>
-        <input type="date" name="fecha" class="form-control" id="formGroupExampleInput" placeholder="Ingrese fecha">
-        <br>
-        <div class="container-fluid  margin">
+      <label for="formGroupExampleInput">Ingrese fecha a facturar</label>
+      <input type="date" name="fecha" class="form-control" id="formGroupExampleInput" placeholder="Ingrese fecha">
+      <br>
+      <div class="container-fluid  margin">
         <button target="_blank" class="themeBtn">Fin de mes</button>
-        </div>
+      </div>
     </form>
   </div>
 </body>

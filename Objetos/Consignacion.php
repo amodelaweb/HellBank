@@ -100,11 +100,7 @@ class Consignacion
   {
 
     $con = $this->connection ;
-    $sql0 = 'SELECT * FROM visitante WHERE cedula = '.$cedula;
-    if($con->query($sql0)->rowCount() == 0){
-      $sql0 = 'INSERT INTO visitante(cedula) VALUES ('.$cedula.')';
-      $con->query($sql0);
-    }
+
     if ($tipoProducto == "ahorros"){
       $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoDestino;
       if($con->query($sql2)->rowCount() != 0){
