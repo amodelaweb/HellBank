@@ -1,3 +1,85 @@
+$(document).ready(function() {
+  $('#aprobar_but').click(function(e) {
+    e.preventDefault();
+
+    function getUrlVars() {
+      var hash;
+      var myJson = {};
+
+      myJson["id_credito"] =  document.getElementById("numPro").innerHTML;
+      myJson["tasa_interes"] =  document.getElementById("tasa_interes").value;
+      myJson["interes_mora"] =  0;
+      myJson["estado"] =  "APROBADO";
+
+      return JSON.stringify(myJson);
+    }
+
+    var test = getUrlVars();
+
+    localStorage.setItem('gameStorage', test);
+    console.log("ok");
+    $.ajax({
+      type: "POST",
+      dataType: 'JSON',
+      url: "/HellBank/api/Admin/Creditos/edit_credito.php",
+      data: test,
+      ContentType: "application/json",
+      headers: {
+        "x-api-key": window.localStorage.accessToken ,
+      },
+      success: function(response) {
+        alert('CREDITO APROBADO !!');
+        console.log(response);
+      },
+      error: function(response) {
+        console.log(response);
+        alert("Error : " + response.responseJSON.error);
+      }
+    });
+  });
+
+  $('#rechazar_but').click(function(e) {
+    e.preventDefault();
+
+    function getUrlVars() {
+      var hash;
+      var myJson = {};
+
+      myJson["id_credito"] =  document.getElementById("numPro").innerHTML;
+      myJson["tasa_interes"] =  document.getElementById("tasa_interes").value;
+      myJson["interes_mora"] =  0;
+      myJson["estado"] =  "NO_APROBADO";
+
+      return JSON.stringify(myJson);
+    }
+
+    var test = getUrlVars();
+
+    localStorage.setItem('gameStorage', test);
+    console.log("ok");
+    $.ajax({
+      type: "POST",
+      dataType: 'JSON',
+      url: "/HellBank/api/Admin/Creditos/edit_credito.php",
+      data: test,
+      ContentType: "application/json",
+      headers: {
+        "x-api-key": window.localStorage.accessToken ,
+      },
+      success: function(response) {
+        alert('CREDITO RECHAZADO !');
+        console.log(response);
+      },
+      error: function(response) {
+        //console.log(response.responseJSON.error);
+        alert("Error : " + response.responseJSON.error);
+      }
+    });
+  });
+
+
+});
+
 var data;
 window.onload = function () {
     var url = document.location.href,
