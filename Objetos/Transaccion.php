@@ -54,6 +54,18 @@ class TransaccionExterna
       return array( "band" => false , "msn" => "No posee cuentas de ahorro actualmente");
     }
   }
+  public function EnviarTransferencia($bancoOr,$bancoDest,$idOrigen,$monto,$idDest,$tipoTrans){
+    $con = $this->connection->connection();
+    $sql0 = 'INSERT INTO transferencias_externas(banco_origen,banco_destino,id_origen,monto,id_destino,fecha_realizado,tipo_trans) 
+    VALUES("'.$bancoOr.'","'.$bancoDest.'",'.$idOrigen.','.$monto.','.$idDest.',NOW(),"'.$tipoTrans.'")';
+    $con->query($sql0);
+}
+  public function RecibirTransferencia($bancoOr,$bancoDest,$idOrigen,$monto,$idDest,$tipoTrans){
+    $con = $this->connection->connection();
+    $sql0 = 'INSERT INTO transferencias_externas(banco_origen,banco_destino,id_origen,monto,id_destino,fecha_realizado,tipo_trans) 
+    VALUES("'.$bancoOr.'","'.$bancoDest.'",'.$idOrigen.','.$monto.','.$idDest.',NOW(),"'.$tipoTrans.'")';
+    $con->query($sql0);
+}
 
 }
 
