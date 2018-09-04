@@ -180,6 +180,7 @@ CREATE TABLE IF NOT EXISTS transferencias_externas (
   id_destino INT,
   fecha_realizado DATETIME DEFAULT CURRENT_TIMESTAMP,
   tipo_trans VARCHAR(200) NOT NULL,
+  interes INT,
   PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 /*--------------------------------------------------------------------------------------------*/
