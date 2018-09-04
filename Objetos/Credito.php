@@ -161,13 +161,13 @@ class Credito{
             $cat_item = array(
               'id' => $id,
               'estado' => $estado,
-              'saldo' => $saldo,
+              'monto' => $monto,
               'tasa_interes' => $tasa_interes,
               'interes_mora' => $interes_mora,
               'monto' => $monto,
               'fecha_creado' => $fecha_creado,
               'ultimo_pago' => $ultimo_pago,
-              'email_vis' => $email_vis
+              'id_dueno' => $id_dueno
 
             );
             array_push($respuesta['creditos'], $cat_item);
@@ -202,7 +202,6 @@ class Credito{
             $cat_item = array(
               'id' => $id,
               'estado' => $estado,
-              'saldo' => $saldo,
               'tasa_interes' => $tasa_interes,
               'interes_mora' => $interes_mora,
               'monto' => $monto,
@@ -225,7 +224,7 @@ class Credito{
     }
     public function upDateCredito($id_credito, $tasa_interes, $interes_mora ,$estado)
     {
-      
+
       $query = 'UPDATE ' . 'credito' . '
       SET tasa_interes = :tasa_interes, interes_mora = :interes_mora,  estado = :estado
       WHERE id = :id';

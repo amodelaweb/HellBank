@@ -27,7 +27,7 @@
           console.log(response);
           $tarjetas = response.tarjeta_credito;
           $.each($tarjetas, function(i, option) {
-            $('#tarjetas').append($('<option/>').attr("value", option.id).text("ID tarjeta: " + option.id + ", Se pidio en la fecha " + option.fecha_creado));
+            $('#tarj').append($('<option/>').attr("value", option.id).text("ID tarjeta: " + option.id + ", Se pidio en la fecha " + option.fecha_creado));
           });
 
         },
@@ -46,8 +46,8 @@
         },
         success: function(response) {
           console.log(response);
-          $tarjetas = response.Credito;
-          $.each($tarjetas, function(i, option) {
+          $creditos = response.creditos;
+          $.each($creditos, function(i, option) {
             $('#crec').append($('<option/>').attr("value", option.id).text("ID credito: " + option.id + ", Se pidio en la fecha " + option.fecha_creado));
           });
 
@@ -66,7 +66,7 @@
         },
         success: function(response) {
           console.log(response);
-          $tarjetas = response.credito;
+          $tarjetas = response.creditos;
           $.each($tarjetas, function(i, option) {
             $('#crei').append($('<option/>').attr("value", option.id).text("ID credito: " + option.id + ", Se pidio en la fecha " + option.fecha_creado));
           });

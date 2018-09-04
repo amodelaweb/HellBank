@@ -1,9 +1,8 @@
 <?php
     include_once dirname(__FILE__) . "\Database.php";
 
-    aumentarSaldoCA();
 
-    function aumentarSaldoCA(){
+    function AumentarSaldoCA(){
         $dataBase = new Database();
         $con = $dataBase->connection();
         
