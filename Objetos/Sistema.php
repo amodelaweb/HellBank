@@ -82,17 +82,18 @@ class Sistema{
 
   public function finMes($fecha,$idAdmin)
   {
+    $arrego = array() ;
     $mes = strftime("%m",strtotime($fecha));
     $fecha = strftime("%d-%m-%Y",strtotime($fecha));
-    CobrarCreditos($idAdmin,$fecha);
-    CobrarTarjetasCredito($mes);
-    AumentarSaldoCA();
-    CobrarCuotaManejoTarjetas();
-    return array("band" => false , "msn" => "Foreign error") ;
+    $arrego[] = $this->CobrarCreditos($idAdmin,$fecha);
+    $arrego[] = $this->CobrarTarjetasCredito($mes);
+    $arrego[] = $this->AumentarSaldoCA();
+    $arrego[] = $this->CobrarCuotaManejoTarjetas();
+    return array("band" => true , "msn" => $arrego) ;
   }
 
-  private function CobrarCreditos($idAdmin, $fechaActual){
-    $con =$this->connection->connection();
+  public function CobrarCreditos($idAdmin, $fechaActual){
+    $con =$this->connection;
     //Cliente
     $sql0 = 'SELECT * FROM credito WHERE email_vis = "N/A"';
     if($con->query($sql0)->rowCount() != 0){
@@ -105,13 +106,19 @@ class Sistema{
             $con->beginTransaction();
             $sql1 = 'SELECT * FROM cuenta_ahorros WHERE id_dueno='.$idDueno.' ORDER BY saldo DESC';
             foreach($con->query($sql1) as $cuenta){
+
                 if($pago <= $cuenta['saldo'] && $pago!=0){
                     $sql2 = 'UPDATE cuenta_ahorros SET saldo='.intval($cuenta['saldo']-$pago).' WHERE id='.$cuenta['id'];
                     $sql3 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES('.$idAdmin.','.$idDueno.',"Se ha descontado de la cuenta de ahorros para pagar el credito de '.$monto.'.")';
                     $sql4 = 'INSERT INTO movimientos_admin (id_admin,id_producto,id_operacion,fecha_realizado) VALUES('.$idAdmin.','.$idCredito.',6,NOW())';
                     $con->exec($sql2);
                     $con->exec($sql3);
+                    try{
                     $con->exec($sql4);
+                  } catch (PDOException $e) {
+                    return array ( "error " .  $e->getMessage() );
+                  }
+
                     $pago = 0;
                 }elseif($pago > $cuenta['saldo']){
                     $sql2 = 'UPDATE cuenta_ahorros SET saldo='.intval($pago-$cuenta['saldo']).' WHERE id='.$cuenta['id'];
@@ -126,6 +133,7 @@ class Sistema{
                 }
             }
             if($pago != 0){
+
                 $con->rollBack();
             }else{
                 $con->commit();
@@ -154,7 +162,8 @@ class Sistema{
                 $con->query($sql1);
                 $mensaje = "No ha pagado su crédito por ".$monto.' se encuentra en mora.';
                 $correo = new ManejoCorreo($email,"Mora Crédito",$mensaje);
-                $correo->enviar_mail("visitante");
+                $res = $correo->enviar_mail("visitante");
+
             }
             if($monto != 0 && $mesCreado == $mesActual){
                 $sql1 = 'UPDATE credito SET monto='.intval($monto+($monto*($diasMora*$interesMora/100))).' WHERE id='.$idCredito;
@@ -165,10 +174,12 @@ class Sistema{
             }
         }
     }
+    return array ("Cobrar Creditos Correcto");
+
 }
 
-private function CobrarTarjetasCredito($mesActual){
-  $con =$this->connection->connection();
+public function CobrarTarjetasCredito($mesActual){
+  $con =$this->connection;
 
   $sql1 = 'SELECT * FROM compra_credito';
   if($con->query($sql1)->rowCount() != 0){
@@ -228,10 +239,11 @@ private function CobrarTarjetasCredito($mesActual){
           }
       }
   }
+  return array("Cobrar tarjeta de credito correcto ! ") ;
 }
 
-private function AumentarSaldoCA(){
-  $con =$this->connection->connection();
+public function AumentarSaldoCA(){
+  $con =$this->connection;
 
   $sql1 = 'SELECT * FROM cuenta_ahorros';
   if(!empty($con->query($sql1))){
@@ -249,10 +261,11 @@ private function AumentarSaldoCA(){
           $con->query($sql4);
       }
   }
+  return array ("Aumentar saldo cuentas de ahorros correcto !.") ;
 }
-private function CobrarCuotaManejoTarjetas(){
-  $con =$this->connection->connection();
-
+public function CobrarCuotaManejoTarjetas(){
+  $con =$this->connection;
+  $arr = array() ;
   $sql0 = 'SELECT * FROM cuenta_ahorros';
   $sql1 = 'SELECT * FROM tarjeta_credito';
   if(!empty($con->query($sql0))){
@@ -269,7 +282,7 @@ private function CobrarCuotaManejoTarjetas(){
               $con->query($sql4);
               $con->query($sql5);
           }else{
-              echo "No hay fondos suficientes para pagar la cuota de manejo para cuenta de ahorros con id ".$idAhorros;
+              $arr[] = array("No hay fondos suficientes para pagar la cuota de manejo para cuenta de ahorros con id ".$idAhorros);
           }
       }
   }
@@ -291,11 +304,12 @@ private function CobrarCuotaManejoTarjetas(){
               $con->query($sql4);
               $con->query($sql5);
           }else{
-              echo "No hay fondos suficientes para pagar la cuota de manejo para tarjeta con id ".$idTarjeta;
+              $arr[] =  ("No hay fondos suficientes para pagar la cuota de manejo para tarjeta con id  ".$idTarjeta);
           }
       }
   }
-
+  $arr[] = "Cobrar cuota de manejo correcto ! " ;
+  return $arr ;
 }
 
 }

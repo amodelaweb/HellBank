@@ -19,12 +19,12 @@ if ($res) {
     $conn = $database->connection();
     $datos = json_decode(file_get_contents("php://input"));
     $sistema_user = new Sistema(0, $conn) ;
-    
+
     $resultado = $sistema_user->finMes($my_token->getId(),$datos->fecha) ;
     if ($resultado['band'] == true){
       http_response_code(200);
       echo json_encode(
-        array('exito' => "Fin de mes correcto")
+        array('exito' => $resultado['msn'] )
       );
     }else{
       http_response_code(400);

@@ -1,40 +1,42 @@
 <?php
-    class ManejoCorreo{
-        private $correDestino;
-        private $asunto;
-        private $mensaje;
-        private $connection ;
-        function __construct($correoDestino, $asunto, $mensaje){
-            $this->correoDestino = $correoDestino;
-            $this->asunto = $asunto;
-            $this->mensaje = $mensaje;
-        }
-        function enviar_mail($username){
-            $mail = new PHPMailer(true);
-            try {
-                //Server settings
-                //$mail->SMTPDebug = 3;                                 // Enable verbose debug output
-                $mail->isSMTP();                                      // Set mailer to use SMTP
-                $mail->Host = "smtp.gmail.com";  // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                $mail->Username = 'soyunavenger128@gmail.com';                 // SMTP username
-                $mail->Password = 'Andres1998';                           // SMTP password
-                $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;                                    // TCP port to connect to
 
-                //Recipients
-                $mail->setFrom('soyunavenger128@gmail.com', 'PHPMailer');
-                $mail->addAddress($this->correoDestino,$username);
+require_once('PHPMailer_5.2.4/class.phpmailer.php');
+include("PHPMailer_5.2./class.smtp.php");
+include_once 'mail.php';
 
-                //Content
-                $mail->Subject = $this->asunto;
-                $mail->Body = $this->mensaje;
+class ManejoCorreo{
+  private $correDestino;
+  private $asunto;
+  private $mensaje;
+  private $connection ;
+  function __construct($correoDestino, $asunto, $mensaje){
+    $this->correoDestino = $correoDestino;
+    $this->asunto = $asunto;
+    $this->mensaje = $mensaje;
+  }
+  function enviar_mail($username){
+    $ella =  EMAIL ;
+    $mail  = new PHPMailer();
+    $body = $this->mensaje;
+    $mail->IsSMTP();
+    $mail->SMTPDebug = 0;
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = SMTP_SEC;
+    $mail->Host = HOST;
+    $mail->Port = E_PORT ;
+    $mail->Username = EMAIL;
+    $mail->Password = E_PASSWORD;
+    $mail->SetFrom(EMAIL, REMITENT);
+    $mail->Subject = $this->asunto;
+    $mail->Body = $body ;
+    $mail->AddAddress($this->correoDestino, "Apreciado Sr./Sra.");
 
-                $mail->send();
-                echo 'El mensaje fué enviado';
-            } catch (Exception $e) {
-                echo 'El mensaje no pudo ser enviado. Error: ', $mail->ErrorInfo;
-            }
-        }
+    if(!$mail->Send()) {
+      return true ;
+    } else {
+      return false ;
     }
+
+  }
+}
 ?>
