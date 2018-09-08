@@ -21,7 +21,7 @@ class Usuario
   {
     try {
       $this->password = htmlspecialchars(strip_tags($this->password));
-      $password   = crypt($this->password);
+      $password   = password_hash($this->password, PASSWORD_DEFAULT);
       $this->password =  null ;
       $query = 'INSERT INTO ' . 'usuarios' . ' SET user_name = :user_name, password = :password, nombre = :nombre, apellido = :apellido, emailadd = :emailadd, rol = :rol';
       $sql = $this->connection->prepare($query);
@@ -62,7 +62,7 @@ class Usuario
         $this->rol = $res['rol'];
         $this->password = $res['password'] ;
 
-        if (hash_equals($this->password, crypt($user_input, $this->password))) {
+        if (password_verify($user_input, $this->password) ) {
           return "success";
         }
       } else {
