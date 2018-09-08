@@ -163,6 +163,36 @@ class Usuario
       return false;
 
     }
+
+    public static function makeUser($conn , $usr_id){
+      if (!Usuario::existuser($conn, $usr_id)){
+        return false ;
+      }
+      $query = 'UPDATE ' . 'usuarios' . ' SET rol = :rol WHERE id = :id';
+      $stmt = $conn->prepare($query);
+
+      $usr_id = htmlspecialchars(strip_tags($usr_id));
+      $rol = "user";
+      if (!is_numeric($usr_id)){
+        return false ;
+      }
+      $stmt->bindParam(':id', $usr_id);
+      $stmt->bindParam(':rol', $rol);
+      try{
+        if($stmt->execute()) {
+
+          return true;
+
+        }else{
+          return false ;
+        }
+      } catch (PDOException $e) {
+        return false ;
+      }
+
+      return false;
+
+    }
     /* GETTERS Y SETTERS*/
 
     /**

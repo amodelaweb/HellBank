@@ -25,11 +25,17 @@ $(document).ready(function() {
         "x-api-key": window.localStorage.accessToken ,
       },
       success: function(response) {
-        alert('FIn de mes correcto');
-        console.log(response);
+        alert('Fin de mes correcto');
+        $resp = response ;
+        $.each($resp, function(i, respu) {
+          $res2 = respu;
+          $.each($res2, function(i, respu2) {
+            alert(respu2);
+          });
+        });
       },
       error: function(response) {
-        console.log(response);
+        console.log(response.exito);
         alert("Error : " + response.responseJSON.error);
       }
     });
