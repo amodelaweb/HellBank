@@ -62,7 +62,7 @@ function MostrarUsuarios() {
       data: test,
       ContentType: "application/json",
       headers: {
-        "x-api-key": window.localStorage.accessToken ,
+        "x-api-key": window.localStorage.accessToken,
       },
       success: function(response) {
         alert('Usuario ahora es un admin !');

@@ -152,6 +152,87 @@ class Consignacion
     }
   }
 
+  public function BancoExtConsignar($tipoProducto, $idProductoDestino, $monto, $tipoMoneda)
+  {
+
+    $con = $this->connection ;
+
+    if ($tipoProducto == "ahorros"){
+      $sql2 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoDestino;
+      if($con->query($sql2)->rowCount() != 0){
+        if ($tipoMoneda == "pesos"){
+          $monto = $monto/1000;
+        }
+        foreach ($con->query($sql2) as $res2) {
+          $idDuenoOr = $res2['id_dueno'];
+          $res2 = $res2['saldo'];
+        }
+        $montoDestino = $res2+$monto;
+        $sql4 = 'UPDATE cuenta_ahorros SET saldo ='.$montoDestino.' WHERE id = '.$idProductoDestino;
+        $sql6 = 'INSERT INTO mensajes(id_origen,id_destino,contenido) VALUES("0",'.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
+        $con->query($sql4);
+        $con->query($sql6);
+        return array ( "band" => true , "msn" =>  "Consignación Realizada" );
+      }else{
+        return array ( "band" => false , "msn" =>  "No existe cuenta de ahorros de destino" );
+      }
+    }elseif($tipoProducto == "credito"){
+      $sql2 = 'SELECT * FROM credito WHERE id = '.$idProductoDestino;
+      if($con->query($sql2)->rowCount() != 0){
+        if ($tipoMoneda == "pesos"){
+          $monto = $monto/1000;
+        }
+        foreach ($con->query($sql2) as $res2) {
+          $idDuenoOr = $res2['id_dueno'];
+          $res2 = $res2['monto'];
+        }
+        if($res2 != 0){
+          $montoDestino = $res2-$monto;
+          if($montoDestino != 0)
+          $monto += $montoDestino;
+        }
+        $sql4 = 'UPDATE credito SET monto ='.$montoDestino.', ultimo_pago= NOW() WHERE id = '.$idProductoDestino;
+        $sql6 = 'INSERT INTO mensajes (id_origen,id_destino,contenido) VALUES("0",'.$idDuenoOr.',"Se ha hecho una consignación por '.$monto.'")';
+        $con->query($sql4);
+        $con->query($sql6);
+        return array ( "band" => true , "msn" =>  "Consignación Realizada" . " Sobran ".intval($monto-$montoDestino));
+      }else{
+        return array ( "band" => false , "msn" =>  "No se puede hacer la consignación porque el crédito se encuentra en 0 javecoins." );
+      }
+    }else{
+      return array ( "band" => false , "msn" =>  "No existe crédito de destino" );
+    }
+  }
+
+  public function BancoExtConsignar2($idProductoOrigen,$monto, $tipoMoneda)
+  {
+    $con = $this->connection ;
+    $sql1 = 'SELECT * FROM cuenta_ahorros WHERE id = '.$idProductoOrigen;
+    if (!empty($con->query($sql1))) {
+
+          if ($tipoMoneda == "pesos") {
+            $monto = $monto/1000;
+          }
+          foreach ($con->query($sql1) as $res1) {
+            $idDuenoOr = $res1['id_dueno'];
+            $res1 = $res1['saldo'];
+          }
+          $montoOrigen = $res1-$monto;
+          
+          if ($res1 >= $monto) {
+            $sql3 = 'UPDATE cuenta_ahorros SET saldo ='.$montoOrigen.' WHERE id = '.$idProductoOrigen;
+            $con->query($sql3);
+            return array( 'band' => true , "msn" =>  "Consignación Realizada") ;
+          } else {
+            return array( 'band' => false , "msn" =>  "No hay fondos suficientes") ;
+          }
+
+    } else {
+      return array( 'band' => false , "msn" =>  "Producto de origen no encontrado") ;
+    }
+    return array ( "band" => false , "msn" =>  "Unexpected error" ) ;
+  }
+
   public static function get_user_consignaciones($conn, $user_id)
   {
     $con = $conn;
