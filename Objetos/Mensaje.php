@@ -12,30 +12,22 @@ class Mensaje{
   public static function getUser_mensajes($id_user, $connx)
   {
     try {
-      $query = 'SELECT * FROM ' . 'credito' . ' WHERE id_dueno = :id_dueno';
+      $query = 'SELECT * FROM mensajes WHERE id_destino='.$id_user.' OR id_origen='.$id_user;
       $sql = $connx->prepare($query);
-      $estado = 'APROBADO';
       $sql->bindParam(':id_dueno', $id_user);
       $sql->execute();
       $n = $sql->rowCount();
       if ($n > 0) {
         $respuesta = array();
-        $respuesta['creditos'] = array();
+        $respuesta['mensajes'] = array();
         while ($fila = $sql->fetch(PDO::FETCH_ASSOC)) {
           extract($fila);
           $cat_item = array(
-            'id' => $id,
-            'estado' => $estado,
-            'saldo' => $saldo,
-            'tasa_interes' => $tasa_interes,
-            'interes_mora' => $interes_mora,
-            'monto' => $monto,
-            'fecha_creado' => $fecha_creado,
-            'ultimo_pago' => $ultimo_pago,
-            'email_vis' => $email_vis
-
+            'id_origen' => $id_origen,
+            'id_destino' => $id_destino,
+            'contenido' => $contenido
           );
-          array_push($respuesta['creditos'], $cat_item);
+          array_push($respuesta['mensajes'], $cat_item);
         }
 
         return array( 'band' => true , 'res' =>  $respuesta) ;

@@ -2,7 +2,7 @@
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
 
-  include_once '../../Objetos/Credito.php';
+  include_once '../../Objetos/Mensaje.php';
   include_once '../../config/Database.php';
   include_once '../../config/AuthJson.php';
 
@@ -16,16 +16,15 @@
       $database = new Database();
       $conn = $database->connection();
 
-      $response_f = Credito::getUser_creditos($my_token->getId() , $conn);
+      $response_f = Mensaje::getUser_mensajes($my_token->getId() , $conn);
 
-      
       if( $response_f['band'] ){
         http_response_code(200);
         echo json_encode($response_f['res']);
       }else{
         http_response_code(400);
         echo json_encode(
-          array('mensaje' => 'No se encontraron creditos.')
+          array('mensaje' => 'No se encontraron Mensajes.')
         );
       }
     }else{
